@@ -8,7 +8,7 @@ db.connect((err)=>{
    console.log("Database connected");
   })
 
-  // Router setup
+  // Router setup s
 
   app.get("/",(req,res)=>{
     res.send("Started")
