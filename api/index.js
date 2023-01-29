@@ -3,6 +3,7 @@ var db=require("./config/connection")
 const userRoute=require("./routes/userRoute")
 const adminRoute=require("./routes/adminRoute")
 const superAdminRoute=require("./routes/superAdminRoute")
+var bodyParser = require('body-parser');
 var app=express();
 
 //database setup
@@ -14,7 +15,13 @@ db.connect((err)=>{
   })
 
   // Router setup middlewares
+ 
+  
+ 
 
+  app.use(bodyParser.urlencoded({
+    extended: true
+  }));
   app.use("/",userRoute);
   app.use("/admin",adminRoute);
   app.use("/superadmin",superAdminRoute)

@@ -8,4 +8,8 @@ router.get("/",(req,res)=>{
     res.send("admin")
 })
 
+router.get("/login",(req,res)=>{
+    res.send("Something")
+})
+
 module.exports=router
