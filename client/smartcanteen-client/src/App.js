@@ -1,23 +1,35 @@
- 
+ import React from 'react';
 import './App.css';
+import {
+  createBrowserRouter,
+  RouterProvider,
+} from "react-router-dom";
 
+ 
+import "bootstrap/dist/css/bootstrap.min.css"
+
+ import Login from "./pages/login"
+ import Home from "./pages/home"
+ import Footer from "./components/footer"
+ import NavBar from './components/navbar';
+
+const router = createBrowserRouter([
+  {
+  
+    path: "/login",
+    element: <Login/>,
+  }
+  ,{
+    path:"/",
+    element:<div><NavBar/>
+    <Home/>
+    <Footer/></div>,
+  }
+]);
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-      
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React 2uhuh
-        </a>
-      </header>
+    <div >
+       <RouterProvider router={router}></RouterProvider>
     </div>
   );
 }
