@@ -37,6 +37,9 @@
     color: #fff;
     padding: 1%;
   }
+  p{
+    color: red;
+  }
   a{
     text-decoration: none !important;
     color: white !important;
