@@ -1,10 +1,8 @@
 import React, { useState } from "react";
-
-import Form from 'react-bootstrap/Form'
-import Button from 'react-bootstrap/Button'
  import Select from 'react-select'
+ import axios from "axios";
 import {
-  MDBBtn,
+   
   MDBContainer,
   MDBRow,
   MDBCol,
@@ -15,6 +13,8 @@ import {
 }
 from 'mdb-react-ui-kit';
  import "./RegisterHotel.css"
+ import { Button } from "@mui/material";
+import { color } from "@mui/system";
 
 const RegisterHotel=()=>{
   //usestate 
@@ -29,6 +29,7 @@ const RegisterHotel=()=>{
    const [state,setState]=useState("");
   const [country,setCountry]=useState("");
   const [district,setDistrict]=useState("");
+  const [agreed,setAgreed] =useState("")
 
   
 const options = [
@@ -36,10 +37,43 @@ const options = [
   { value: 'strawberry', label: 'Strawberry' },
   { value: 'vanilla', label: 'Vanilla' }
 ]
-function HandleCateogoryChange(e){
-  setCategory(e.target.value)
+const HandleCateogoryChange=(e)=>{
+  setCategory(e.value)
 }
+ const handleSubmit=(e)=>{
+
+  e.preventDefault()
+  const registerDetails={
+    restaurantName: RestaurantName,
+    adminName:adminName,
+    category:category,
+    phone:phone,
+    email:email,
+    password:Password,
+    street:street,
+    district:district,
+    zipCode:zipCode,
+    state:state,
+    country:country,
+  }
+  registerUser(registerDetails)
+ }
+
+ // sending data to the back
+const RegisterURL="http://localhost:3002/superadmin/Register-RestaurantAdmin"
+ const registerUser=(registerData)=>{
+       axios
+      .post(RegisterURL, {
+        title: "Hello World!",
+        body:registerData
+      })
+      .then((response) => {
+      console.log(response)
+      });
+  
+ }
     return(
+      <form onSubmit={handleSubmit }>
       <MDBContainer fluid className='h-custom'>
 
       <MDBRow className='d-flex justify-content-center align-items-center h-100'>
@@ -82,10 +116,12 @@ function HandleCateogoryChange(e){
                     <MDBCol>
                      
                     <Select options={options} 
-                    value ={category}
-                    onChange={(e)=>{
-                      setCategory(e)
-                    }} />
+                
+                    onChange= {(e)=>{
+                      HandleCateogoryChange(e)
+                      
+                    }}
+                     />
                     <span>
                         Category
                       </span>
@@ -186,8 +222,18 @@ function HandleCateogoryChange(e){
 </MDBRow>
 
                   
-                  <MDBCheckbox name='flexCheck' id='flexCheckDefault' labelClass='text-white mb-4' label='I do accept the Terms and Conditions of your site.' />
-                  <MDBBtn color='light' size='lg'>Register</MDBBtn>
+                  <MDBCheckbox name='flexCheck' id='flexCheckDefault' labelClass='text-white mb-4' label='I do accept the Terms and Conditions of your site.'
+                 value={agreed}
+                 onChange={(e)=>{
+                    setAgreed(e.target.value)
+                  }} />
+                  <Button style={{
+        borderRadius: 10,
+        backgroundColor: "white",
+        padding: "13px 28px",
+        fontSize: "14px",
+        color: 'black'
+    }} variant="contained"  id="submitbutton" type="submit"  > Register </Button>
 
                 </MDBCol>
               </MDBRow>
@@ -200,7 +246,7 @@ function HandleCateogoryChange(e){
       </MDBRow>
 
     </MDBContainer>
-
+    </form>
     )
 }
 
