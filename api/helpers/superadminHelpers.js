@@ -6,6 +6,7 @@ const bcrypt=require("bcrypt")
 
 module.exports={
 
+  // Registering new restaurant details 
   registerRestaurantAdmin:(dataToSave)=>{
         return new Promise(async(resolve,reject)=>{
             console.log(dataToSave.password)
@@ -14,8 +15,23 @@ module.exports={
         
 db.get().collection(collection.RESTAURANT_ADMIN).insertOne(dataToSave)
 .then((response)=>{
-    console.log(response);
+     resolve(response)
 })
         })
-    }
+    },
+
+
+
+// Getting all restaurant details
+
+getAllRestaurants:()=>{
+
+  return new Promise(async(resolve,reject)=>{
+
+
+    let RestaurantData=db.get().collection(collection.RESTAURANT_ADMIN).find().toArray();
+    resolve(RestaurantData);
+  })
+}
+
 }

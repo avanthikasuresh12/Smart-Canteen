@@ -3,7 +3,7 @@ import './App.css';
 import {
   createBrowserRouter,
   RouterProvider,
-  Route,Routes
+   
 } from "react-router-dom";
 
  
@@ -11,9 +11,7 @@ import {
 import { Container  } from "react-bootstrap";
 
 import RegisterHotel  from './pages/SuperAdmin/RegisterHotel';
- import Home from "./pages/Home"
- import Footer from "./components/Footer"
- import NavBar from './components/Navbar';
+import SuperAdminHome from './pages/SuperAdmin/home'
  
 const router = createBrowserRouter([
   {
@@ -24,14 +22,15 @@ const router = createBrowserRouter([
         <RegisterHotel />
      
   </Container>,
+  },
+  {
+    path:"superadmin",
+    element:
+    <Container>
+    <SuperAdminHome />
+    </Container>
   }
-  ,{
-    path:"/",
-    element:<div><NavBar/>
-    <Home/>
-    <Footer/></div>,
-   
-  }
+ 
 ]);
 function App() {
   return (
