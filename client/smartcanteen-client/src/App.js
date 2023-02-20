@@ -1,42 +1,34 @@
- import * as React from 'react';
-import './App.css';
-import {
-  createBrowserRouter,
-  RouterProvider,
-   
-} from "react-router-dom";
+import * as React from "react";
+import "./App.css";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
- 
+import { Container } from "react-bootstrap";
 
-import { Container  } from "react-bootstrap";
+import RegisterHotel from "./pages/SuperAdmin/RegisterHotel";
+import SuperAdminHome from "./pages/SuperAdmin/home";
 
-import RegisterHotel  from './pages/SuperAdmin/RegisterHotel';
-import SuperAdminHome from './pages/SuperAdmin/home'
- 
 const router = createBrowserRouter([
   {
-  
     path: "superadmin/add-hoteladmin",
-    element:   <Container>
- 
+    element: (
+      <Container>
         <RegisterHotel />
-     
-  </Container>,
+      </Container>
+    ),
   },
   {
-    path:"superadmin",
-    element:
-    <Container>
-    <SuperAdminHome />
-    </Container>
-  }
- 
+    path: "superadmin",
+    element: (
+      <Container>
+        <SuperAdminHome />
+      </Container>
+    ),
+  },
 ]);
 function App() {
   return (
-    
-    <div >
-       <RouterProvider router={router}></RouterProvider>
+    <div>
+      <RouterProvider router={router}></RouterProvider>
     </div>
   );
 }

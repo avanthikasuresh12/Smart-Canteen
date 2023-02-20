@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { MDBBadge, MDBBtn, MDBTable, MDBTableHead, MDBTableBody } from 'mdb-react-ui-kit';
+import Select from "react-select";
 import "./home.css"
 import axios from 'axios';
 import ConfigData from '../../config/config';
@@ -16,7 +17,15 @@ const SuperAdminHome=()=>{
         })
     },[])
 
- 
+ const hotelStatusOption=[
+  { value: "Active", label:   <MDBBadge color='success' pill>
+  Active
+</MDBBadge> },
+  { value: "Deactive", label:   <MDBBadge color='danger' pill>
+ De Active
+</MDBBadge> },
+   
+ ]
   
   const ColumnsData= [
       {
@@ -79,8 +88,14 @@ const SuperAdminHome=()=>{
             <p>{e.email}
             </p></td>
             <td>
-            <p>{e.phone}
-            </p></td>
+            <Select placeholder={e.active?  <MDBBadge color='success' pill>
+              Active
+            </MDBBadge>:  <MDBBadge color='danger' pill>
+              De Active
+            </MDBBadge>}
+                          options={hotelStatusOption}
+                          
+                        /></td>
          </tr>
       )
       })

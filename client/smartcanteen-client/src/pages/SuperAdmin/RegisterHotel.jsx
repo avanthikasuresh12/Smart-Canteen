@@ -35,9 +35,14 @@ const RegisterHotel = () => {
   const [registerationDetails, setRegisterationDetails] = useState("");
 
   const options = [
-    { value: "chocolate", label: "Chocolate" },
-    { value: "strawberry", label: "Strawberry" },
-    { value: "vanilla", label: "Vanilla" },
+ 
+    { value: " Fast food restaurants", label: " Fast food restaurants" },
+    { value: "Casual dining restaurants", label: "Casual dining restaurants" },
+    { value: "Contemporary casual restaurants", label: "Contemporary casual restaurants" },
+    { value: "Fast casual restaurants", label: "Fast casual restaurants" },
+    { value: "Cafés", label: "Cafés" },
+    { value: "Pizzerias", label: "Pizzerias" },
+     { value: "Pop-up restaurants", label: "Pop-up restaurants" },
   ];
   const HandleCateogoryChange = (e) => {
     setCategory(e.value);

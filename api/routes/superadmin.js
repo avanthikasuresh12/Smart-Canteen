@@ -3,10 +3,12 @@ const express=require("express")
 const router=express.Router();
 const superAdminHelpers=require("../helpers/superadminHelpers")
  
-router.post("/register-restaurantAdmin",  async  function  (req, res, next) {
+router.post("/register-restaurantAdmin",  async  function  (req, res ) {
       
-  await superAdminHelpers.registerRestaurantAdmin(req.body.body).then((response)=>{
+  let data=req.body;
+  await superAdminHelpers.registerRestaurantAdmin(data.body).then((response)=>{
     res.send(response)
+     
   });
  
   });
