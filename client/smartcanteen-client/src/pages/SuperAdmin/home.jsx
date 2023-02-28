@@ -4,9 +4,12 @@ import Select from "react-select";
 import "./home.css"
 import axios from 'axios';
 import ConfigData from '../../config/config';
+import { Button } from '@mui/material';
+import EditRestaurant from  "../../pages/SuperAdmin/edit-restaurant"
 const SuperAdminHome=()=>{
 
     const [restaurants,SetRestaurants] =useState([])
+    const [openEdit,setOpenEdit]=useState(false)
     
     const HomeUrl= ConfigData.ServerAddress+"/superadmin"
     useEffect(()=>{
@@ -45,6 +48,9 @@ const SuperAdminHome=()=>{
       },
         {
           name:  "Status",
+      },
+      {
+        name:"",
       }
    
     
@@ -96,6 +102,35 @@ const SuperAdminHome=()=>{
                           options={hotelStatusOption}
                           
                         /></td>
+                         <Button
+                      style={{
+                        borderRadius: 5,
+                        backgroundColor: "white",
+                        padding: "3px 8px",
+                        fontSize: "14px",
+                        color: "black",
+                      }}
+                      variant="contained"
+               
+                    >
+                    Edit
+                    </Button>
+                    <Button
+                      style={{
+                        borderRadius: 5,
+                        backgroundColor: "white",
+                        padding: "3px 8px",
+                        fontSize: "14px",
+                        color: "black",
+                      }}
+                      variant="contained"
+               onClick={setOpenEdit}
+                    >
+                    View
+                    </Button>
+                    <EditRestaurant 
+                    openEdit={openEdit}
+                    setOpenEdit={setOpenEdit}/> 
          </tr>
       )
       })
