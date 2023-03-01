@@ -128,9 +128,11 @@ const SuperAdminHome=()=>{
                     >
                     View
                     </Button>
-                    <EditRestaurant 
+                    <EditRestaurant
+                    restaurantDetails={e} 
                     openEdit={openEdit}
-                    setOpenEdit={setOpenEdit}/> 
+                    setOpenEdit={setOpenEdit}
+                    /> 
          </tr>
       )
       })
