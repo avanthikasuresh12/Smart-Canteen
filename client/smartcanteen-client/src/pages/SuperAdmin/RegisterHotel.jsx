@@ -120,13 +120,14 @@ const RegisterHotel = () => {
   const RegisterURL =
     ConfigData.ServerAddress + "/superadmin/Register-RestaurantAdmin";
   const registerUser = (registerData) => {
+ 
     axios
       .post(RegisterURL, {
         title: "Hello World!",
         body: registerData,
       })
       .then((res) => {
-        console.log("response");
+ 
         window.location.href=ConfigData.originAddress+"/superadmin";
       })
        

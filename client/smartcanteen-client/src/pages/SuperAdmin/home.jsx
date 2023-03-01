@@ -6,20 +6,32 @@ import axios from 'axios';
 import ConfigData from '../../config/config';
 import { Button } from '@mui/material';
 import EditRestaurant from  "../../pages/SuperAdmin/edit-restaurant"
+const DefaultRestaurantDet={
+  id: 0,
+  restaurantName: "",
+  adminName: "",
+  category: "",
+  phone: "",
+  email: "",
+}
 const SuperAdminHome=()=>{
 
     const [restaurants,SetRestaurants] =useState([])
     const [openEdit,setOpenEdit]=useState(false)
+    const [editDetails,setEditDetails]=useState(DefaultRestaurantDet)
     
     const HomeUrl= ConfigData.ServerAddress+"/superadmin"
     useEffect(()=>{
-      console.log("hey")
+     
         axios.get(HomeUrl).then((response)=>{
-          console.log("response is "+response.data);
+        
           SetRestaurants(response.data)
         })
     },[])
-
+const HandleOpenEdit=(editDetails)=>{
+  setOpenEdit(true)
+  setEditDetails(editDetails)
+}
  const hotelStatusOption=[
   { value: "Active", label:   <MDBBadge color='success' pill>
   Active
@@ -124,21 +136,18 @@ const SuperAdminHome=()=>{
                         color: "black",
                       }}
                       variant="contained"
-               onClick={setOpenEdit}
+               onClick={()=>HandleOpenEdit(e)}
                     >
-                    View
+                   {e.restaurantName}
                     </Button>
-                    <EditRestaurant
-                    restaurantDetails={e} 
-                    openEdit={openEdit}
-                    setOpenEdit={setOpenEdit}
-                    /> 
+                    
          </tr>
       )
       })
      }
   
   return (
+    <>
     <MDBTable align='middle'>
       <MDBTableHead>
         <tr>
@@ -150,6 +159,12 @@ const SuperAdminHome=()=>{
         
       </MDBTableBody>
     </MDBTable>
+    <EditRestaurant
+    restaurantDetails={editDetails} 
+    openEdit={openEdit}
+    setOpenEdit={setOpenEdit}
+    /> 
+    </>
   );
   
 }

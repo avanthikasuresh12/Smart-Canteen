@@ -1,24 +1,25 @@
 const { response } = require("express");
-const express=require("express")
-const router=express.Router();
-const superAdminHelpers=require("../helpers/superadminHelpers")
- 
-router.post("/register-restaurantAdmin",  async  function  (req, res ) {
-      
-  let data=req.body;
-  await superAdminHelpers.registerRestaurantAdmin(data.body).then((response)=>{
-    res.send(response)
-     
-  });
- 
-  });
-  
+const express = require("express");
+const router = express.Router();
+const superAdminHelpers = require("../helpers/superadminHelpers");
 
-router.get("/",async (req,res)=>{
+router.post("/addoredit-RestaurantAdmin", async function (req, res) {
+  console.log("ethitttto")
+  let data = req.body.body;
+  if (data.id == 0) {
+    await superAdminHelpers.registerRestaurant(data).then((response) => {
+      res.send(response);
+    });
+  } else {
+    await superAdminHelpers.UpdateRestaurant(data).then((response) => {
+      res.send(response);
+    });
+  }
+});
 
-  await superAdminHelpers.getAllRestaurants().then((restaurantData)=>{
-    console.log(restaurantData);
-    res.send(restaurantData)
-  })
-})
-module.exports=router;
+router.get("/", async (req, res) => {
+  await superAdminHelpers.getAllRestaurants().then((restaurantData) => {
+    res.send(restaurantData);
+  });
+});
+module.exports = router;
