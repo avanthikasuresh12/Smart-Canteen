@@ -4,13 +4,15 @@ const router = express.Router();
 const superAdminHelpers = require("../helpers/superadminHelpers");
 
 router.post("/addoredit-RestaurantAdmin", async function (req, res) {
-  console.log("ethitttto")
+
   let data = req.body.body;
+  
   if (data.id == 0) {
     await superAdminHelpers.registerRestaurant(data).then((response) => {
       res.send(response);
     });
   } else {
+ console.log(data);
     await superAdminHelpers.UpdateRestaurant(data).then((response) => {
       res.send(response);
     });

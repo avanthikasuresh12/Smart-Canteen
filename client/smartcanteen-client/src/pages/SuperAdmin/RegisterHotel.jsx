@@ -92,6 +92,7 @@ const RegisterHotel = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     const registerDetails = {
+      id:0,
       restaurantName: RestaurantName,
       adminName: adminName,
       category: category,
@@ -118,7 +119,7 @@ const RegisterHotel = () => {
   }, [error]);
   // sending data to the back
   const RegisterURL =
-    ConfigData.ServerAddress + "/superadmin/Register-RestaurantAdmin";
+    ConfigData.ServerAddress + "/superadmin/addoredit-RestaurantAdmin"
   const registerUser = (registerData) => {
  
     axios
@@ -127,8 +128,8 @@ const RegisterHotel = () => {
         body: registerData,
       })
       .then((res) => {
- 
-        window.location.href=ConfigData.originAddress+"/superadmin";
+ console.log("response is",res);
+        
       })
        
   };

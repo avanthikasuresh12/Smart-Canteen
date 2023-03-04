@@ -2,6 +2,7 @@ const db = require("../config/connection");
 const collection = require("../config/collection");
 const bcrypt = require("bcrypt");
 const {  ObjectId } = require("mongodb");
+const { response } = require("express");
 
 // datas to bcrypt the password
 
@@ -12,7 +13,7 @@ module.exports = {
       console.log(dataToSave.password);
       var bcryptedPassword = await bcrypt.hash(dataToSave.password, 10);
       dataToSave.password = bcryptedPassword;
-
+delete dataToSave.id;
       db.get()
         .collection(collection.RESTAURANT_ADMIN)
         .insertOne(dataToSave)
@@ -37,6 +38,7 @@ module.exports = {
   //Updating excisting restaurant details
   UpdateRestaurant: (prodDetails) => {
     return new Promise(async (resove, reject) => {
+      console.log(prodDetails.id);
       db.get()
         .collection(collection.RESTAURANT_ADMIN)
         .updateOne(
@@ -48,9 +50,12 @@ module.exports = {
               category: prodDetails.category,
               phone: prodDetails.phone,
               email: prodDetails.email,
+              active:prodDetails.email.active,
             },
           }
-        );
+        ).then((response)=>{
+           resove(response)
+        })
     });
   },
 };

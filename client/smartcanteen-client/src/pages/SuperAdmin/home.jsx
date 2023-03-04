@@ -7,19 +7,21 @@ import ConfigData from '../../config/config';
 import { Button } from '@mui/material';
 import EditRestaurant from  "../../pages/SuperAdmin/edit-restaurant"
 const DefaultRestaurantDet={
-  id: 0,
+  _id: 0,
+ 
   restaurantName: "",
   adminName: "",
   category: "",
   phone: "",
   email: "",
+  password:""
 }
 const SuperAdminHome=()=>{
 
     const [restaurants,SetRestaurants] =useState([])
     const [openEdit,setOpenEdit]=useState(false)
     const [editDetails,setEditDetails]=useState(DefaultRestaurantDet)
-    
+    const [randomId,setRandomId]=useState(Date.now().toString());
     const HomeUrl= ConfigData.ServerAddress+"/superadmin"
     useEffect(()=>{
      
@@ -27,10 +29,17 @@ const SuperAdminHome=()=>{
         
           SetRestaurants(response.data)
         })
-    },[])
+ 
+    },[openEdit])
+    const ResetEditDetails=()=>{
+setEditDetails(DefaultRestaurantDet)
+setRandomId(Date.now().toString())
+    }
+
 const HandleOpenEdit=(editDetails)=>{
-  setOpenEdit(true)
+  
   setEditDetails(editDetails)
+  setOpenEdit(true)
 }
  const hotelStatusOption=[
   { value: "Active", label:   <MDBBadge color='success' pill>
@@ -62,7 +71,7 @@ const HandleOpenEdit=(editDetails)=>{
           name:  "Status",
       },
       {
-        name:"",
+        name:"Action",
       }
    
     
@@ -123,7 +132,7 @@ const HandleOpenEdit=(editDetails)=>{
                         color: "black",
                       }}
                       variant="contained"
-               
+                      onClick={()=>HandleOpenEdit(e)}
                     >
                     Edit
                     </Button>
@@ -136,7 +145,7 @@ const HandleOpenEdit=(editDetails)=>{
                         color: "black",
                       }}
                       variant="contained"
-               onClick={()=>HandleOpenEdit(e)}
+             
                     >
                    {e.restaurantName}
                     </Button>
@@ -148,6 +157,10 @@ const HandleOpenEdit=(editDetails)=>{
   
   return (
     <>
+    <div>
+      <Button onClick={()=>{HandleOpenEdit(DefaultRestaurantDet)}} >
+        Add New
+      </Button>
     <MDBTable align='middle'>
       <MDBTableHead>
         <tr>
@@ -163,7 +176,11 @@ const HandleOpenEdit=(editDetails)=>{
     restaurantDetails={editDetails} 
     openEdit={openEdit}
     setOpenEdit={setOpenEdit}
+    resetEdit={ResetEditDetails}
+    randomId={randomId}
+    
     /> 
+    </div>
     </>
   );
   
