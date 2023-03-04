@@ -30,7 +30,7 @@ const EditRestaurant = (props) => {
   const [isSubmit, setisSubmit] = useState("");
   const [active,setActive]=useState(restaurantDetails.active)
   const [password,setPassword]=useState("")
-  const [callreg,setCallReg]=useState(false);
+  const [regCallID,setRegCallID]=useState("");
 
 
   useEffect(() => {
@@ -39,10 +39,10 @@ const EditRestaurant = (props) => {
     } else {
       setisSubmit(false);
     }
-  },[callreg]);
+  },[regCallID]);
   const setCheckError=()=>{
-if(setisSubmit&&Object.keys(error).length == 0)
-setCallReg(true);
+ 
+setRegCallID(Date.now().toString());
   }
   const hotelStatusOption=[
     { value: "Active", label:   <MDBBadge color='success' pill>
