@@ -6,6 +6,7 @@ import { Container } from "react-bootstrap";
 
 import RegisterHotel from "./pages/SuperAdmin/RegisterHotel";
 import SuperAdminHome from "./pages/SuperAdmin/home";
+import SignIn from "./pages/SuperAdmin/login";
 
 const router = createBrowserRouter([
   {
@@ -21,6 +22,14 @@ const router = createBrowserRouter([
     element: (
       <Container>
         <SuperAdminHome />
+      </Container>
+    ),
+  },
+  {
+    path: "superadmin/login",
+    element: (
+      <Container>
+        <SignIn />
       </Container>
     ),
   },

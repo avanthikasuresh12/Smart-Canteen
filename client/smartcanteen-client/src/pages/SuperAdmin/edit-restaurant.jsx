@@ -99,7 +99,7 @@ setRegCallID(Date.now().toString());
     setPassword(e.target.value);
   }
   const registerUser = (registerData) => {
- console.log(registerData);
+ 
     axios
       .post(RegisterURL, {
         body: registerData,

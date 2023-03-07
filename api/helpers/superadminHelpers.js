@@ -58,4 +58,27 @@ delete dataToSave.id;
         })
     });
   },
-};
+
+  //Login superadmin
+
+ Login:(data)=>{
+ return new Promise(async(resolve,reject)=>{
+ let superAdmin=await db.get()
+  .collection(collection.SUPER_ADMIN)
+  .findOne({email:data.email})
+ console.log(superAdmin.password, "+", data.password);
+ if(superAdmin){
+  if(superAdmin.password==data.password){
+    console.log("login succces");
+  }else{
+    console.log("login Failed");
+  }
+ }else{
+  console.log("no user");
+ }
+ 
+}
+ )
+  }
+}
+

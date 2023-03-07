@@ -24,4 +24,10 @@ router.get("/", async (req, res) => {
     res.send(restaurantData);
   });
 });
+
+router.post("/login", async (req, res) => {
+await superAdminHelpers.Login(req.body.body).then((res)=>{
+  
+})
+});
 module.exports = router;
