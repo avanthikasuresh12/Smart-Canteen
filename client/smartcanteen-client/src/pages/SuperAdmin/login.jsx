@@ -20,10 +20,9 @@ export default function SignIn() {
   const [errorId,setErrorId]=useState([]);
 const [isSubmit,setisSubmit]=useState(false)
 const [loginDetails,setLoginDetails]=useState({})
+const [finalError,setFinalError]=useState("")
   useEffect(()=>{
-    console.log("useEffect");
-    console.log("error is",error);
-    console.log(isSubmit);
+ 
     if (Object.keys(error).length == 0 && isSubmit) {
       LoginUser()
       } else {
@@ -37,13 +36,28 @@ const [loginDetails,setLoginDetails]=useState({})
     axios
     .post(LoginURL, {
       body: loginDetails,
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      withCredentials: true
+      
     })
     .then((res) => {
+       
       if (res.status == 200) {
+        setFinalError("")
+        window.location.href=ConfigData.originAddress+"/superadmin"
      
    
       }
-    });
+    }).catch((err)=>{
+ 
+       
+        console.log("error ise",err.response.data.err);
+        setFinalError(err.response.data.err)
+      
+    })
+ 
   }
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -63,13 +77,14 @@ const checkError=()=>{
 }
   const validateDetails = (data) => {
     var error = {};
-    console.log(data);
+    
     if (!data.email) {
       error.email = "email required !!";
     }
     if (!data.password) {
       error.password = "password required";
     }
+     setFinalError("")
     return error
   };
   return (
@@ -121,6 +136,7 @@ const checkError=()=>{
       
             />
  { <p>{error.password}</p>} 
+{ <p>{finalError}</p>}
             <Button
               type="submit"
               fullWidth

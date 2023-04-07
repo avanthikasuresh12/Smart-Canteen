@@ -31,7 +31,7 @@ const EditRestaurant = (props) => {
   const [active,setActive]=useState(restaurantDetails.active)
   const [password,setPassword]=useState("")
   const [regCallID,setRegCallID]=useState("");
-
+ 
 
   useEffect(() => {
     if (Object.keys(error).length == 0 && isSubmit) {
@@ -45,10 +45,10 @@ const EditRestaurant = (props) => {
 setRegCallID(Date.now().toString());
   }
   const hotelStatusOption=[
-    { value: "Active", label:   <MDBBadge color='success' pill>
+    { value:true, label:   <MDBBadge color='success' pill>
     Active
   </MDBBadge> },
-    { value: "Deactive", label:   <MDBBadge color='danger' pill>
+    { value:false, label:   <MDBBadge color='danger' pill>
    De Active
   </MDBBadge> },
      
@@ -99,10 +99,11 @@ setRegCallID(Date.now().toString());
     setPassword(e.target.value);
   }
   const registerUser = (registerData) => {
- 
+    axios.defaults.withCredentials = true;
     axios
       .post(RegisterURL, {
         body: registerData,
+        
       })
       .then((res) => {
         if (res.status == 200) {

@@ -7,6 +7,7 @@ import { Container } from "react-bootstrap";
 import RegisterHotel from "./pages/SuperAdmin/RegisterHotel";
 import SuperAdminHome from "./pages/SuperAdmin/home";
 import SignIn from "./pages/SuperAdmin/login";
+import AdminProfile from "./pages/Admin/profile";
 
 const router = createBrowserRouter([
   {
@@ -33,6 +34,24 @@ const router = createBrowserRouter([
       </Container>
     ),
   },
+  
+    {
+      path: "admin",
+      element: (
+        <Container>
+          <SuperAdminHome />
+        </Container>
+      ),
+    },
+    {
+      path: "admin/profile",
+      element: (
+        <Container>
+          <AdminProfile/>
+        </Container>
+      ),
+    },
+  
 ]);
 function App() {
   return (
