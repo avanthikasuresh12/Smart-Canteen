@@ -5,5 +5,6 @@ module.exports={
     SUPER_ADMIN:"super_admin",
     CATEGORY:"category",
     MENU_ITEM:"menu_item",
+    TABLE:"table"
     
 }

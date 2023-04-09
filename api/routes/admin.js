@@ -28,8 +28,9 @@ router.post("/edit-profile", (req, res) => {
 //add or edit   categories of menu to the hotel
 
 router.post("/addoredit-category", (req, res) => {
+ 
   const id = req.body.id;
-  const data = req.body.data;
+  const data = req.body 
   if (data.id == 0) {
     adminHelpers.addCategory(data, id).then((response) => {
       res.send(response);
@@ -44,6 +45,7 @@ router.post("/addoredit-category", (req, res) => {
 //get   single catgory
 router.get("/category", (req, res) => {
   const id = req.body.id;
+  console.log(id);
   adminHelpers.getCategory(id).then((response) => {
     res.send(response);
   });
@@ -57,7 +59,7 @@ router.post("/delete-category", (req, res) => {
   });
 });
 //get category list
-router.get("/category", (req, res) => {
+router.get("/category-list", (req, res) => {
   const restaurantId = req.body.id;
   adminHelpers.getAllCategory(restaurantId).then((response) => {
     res.send(response);
@@ -67,7 +69,7 @@ router.get("/category", (req, res) => {
 // add or edit   menu items to the hotel;
 router.post("/addoredit-menuitem", (req, res) => {
   const id = req.body.id;
-  const data = req.body.data;
+  const data = req.body;
   if (data.id == 0) {
     adminHelpers.addMenuItem(data, id).then((response) => {
       res.send(response);
@@ -97,11 +99,55 @@ router.get("/menu-item", (req, res) => {
 
 // delete menu item
 
-router.post("/delete-menuitem", (req, res) => {
+router.get("/delete-menuitem", (req, res) => {
   const id = req.body.id;
+  console.log(id);
   adminHelpers.deleteMenuItem(id).then((response) => {
     res.send(response);
   });
 });
+
+//create or edit new tables
+router.post("/addoredit-table", (req, res) => {
+  const data = req.body.data;
+  const restaurantId = req.body.id;
+  if (data.id == 0) {
+    adminHelpers.createTable(data, restaurantId).then((response) => {
+      res.send(response);
+    });
+  } else {
+    adminHelpers.UpdateTable(data).then((response) => {
+      res.send(response);
+    });
+  }
+});
+
+//get all tables
+
+router.get("/table-list",(req,res)=>{
+  const restaurantId=req.body.id;
+  adminHelpers.getAllTables(restaurantId).then((response)=>{
+    res.send(response)
+  })
+})
+
+
+//get single table
+
+router.get("/table",(req,res)=>{
+  const id=req.body.id;
+  adminHelpers.getTable(id).then((response)=>{
+    res.send(response)
+  })
+})
+
+//delete a table
+
+router.get("/delete-table",(req,res)=>{
+  const id=req.body.id;
+  adminHelpers.deleteTable(id).then((response)=>{
+    res.send(response)
+  })
+})
 
 module.exports = router;
