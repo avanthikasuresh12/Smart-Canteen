@@ -3,12 +3,13 @@ const collection = require("../config/collection");
 const bcrypt = require("bcrypt");
 const { ObjectId } = require("mongodb");
 const { reject } = require("bcrypt/promises");
+const { response } = require("express");
 module.exports = {
   login: (userData) => {
     return new Promise(async (resolve, reject) => {
       const admin = await db
         .get()
-        .collection(collection.RESTAURANT_ADMIN)
+        .collection(collection.USERS)
         .findOne({ email: userData.email });
       if (!admin) {
         reject({ message: "No user found" });
@@ -23,13 +24,14 @@ module.exports = {
     });
   },
 
-  editProfile: (id, updateDetails) => {
+  editProfile: ( updateDetails) => {
     return new Promise(async (resolve, reject) => {
+      console.log(updateDetails);
       await db
         .get()
-        .collection(collection.RESTAURANT_ADMIN)
+        .collection(collection.USERS)
         .updateOne(
-          { _id: ObjectId(id) },
+          { _id: ObjectId(updateDetails.id) },
           {
             $set: {
               restaurantName: updateDetails.restaurantName,
@@ -249,5 +251,13 @@ module.exports = {
           resolve({ message: "Table updated!!" });
         });
     });
+  },
+  getRestaurant:(id)=>{
+    return new Promise((resolve,reject)=>{
+      db.get().collection(collection.USERS).findOne({_id:ObjectId( id)}).then((response)=>{
+resolve(response)
+      })
+    })
+   
   }
 };

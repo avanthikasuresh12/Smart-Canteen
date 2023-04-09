@@ -34,8 +34,15 @@ db.connect((err)=>{
     methods: ['POST', 'PUT', 'GET', 'OPTIONS', 'HEAD'],
     optionSuccessStatus:200,
 }))
+
+app.use(session({
+  secret: 'keyboard cat',
+  resave: false,
+  saveUninitialized: false,
+  cookie: { expires:60*60*24}
+}))
   // Router setup middlewares
-  app.options('http://localhost:3000', cors()) 
+  // app.options('http://localhost:3000', cors()) 
   app.use("/",userRoute);
   app.use("/admin",adminRoute);
   app.use("/superadmin",superAdminRoute);

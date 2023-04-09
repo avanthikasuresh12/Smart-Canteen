@@ -1,11 +1,17 @@
 const express = require("express");
-const auth = require("../config/auth");
 const router = express.Router();
 const superAdminHelpers = require("../helpers/superadminHelpers");
 
 // Check the incoming user is Superadmin or not
-
-router.post("/addoredit-RestaurantAdmin", async function (req, res) {
+const checkSuperAdmin=(req,res,next)=>{
+if(!req.session.user){
+console.log("lot logined");
+}else if(req.session.user.role=="superAdmin"){
+  console.log(true);
+next()
+}
+}
+router.post("/addoredit-RestaurantAdmin",checkSuperAdmin, async function (req, res) {
   let data = req.body.body;
   if (data.id == 0) {
     await superAdminHelpers.registerRestaurant(data).then((response) => {
@@ -13,28 +19,20 @@ router.post("/addoredit-RestaurantAdmin", async function (req, res) {
     });
   } else {
     await superAdminHelpers.UpdateRestaurant(data).then((response) => {
-      
+      res.send(response)
     });
   }
 });
 
-router.get("/", async (req, res) => {
+router.get("/", checkSuperAdmin,async (req, res) => {
+  console.log(req.session.user);
   await superAdminHelpers.getAllRestaurants().then((restaurantData) => {
     res.send(restaurantData);
   });
 });
 
-router.post("/login", async (req, res) => {
-  await superAdminHelpers
-    .Login(req.body.body)
-    .then((response, token) => {
-      res.cookie("access_token", token, { httpOnly: true }).send(response);
-    })
-    .catch((err) => {
-      res.status(401).send(err);
-    });
-});
-router.post("/delete", async (req, res) => {
+
+router.post("/delete",checkSuperAdmin, async (req, res) => {
   const id = req.body.id;
   await superAdminHelpers
     .DeleteUser(id)
@@ -45,7 +43,7 @@ router.post("/delete", async (req, res) => {
       res.status(401).send(err);
     });
 });
-router.post("/change-status", async (req, res) => {
+router.post("/change-status",checkSuperAdmin, async (req, res) => {
   const id = req.body.id;
   const status = req.body.status;
   await superAdminHelpers.changeStatus(id, status);

@@ -14,7 +14,7 @@ import ConfigData from "../../config/config";
 import CategoryOptions from "../../config/restaurantCategories";
 import ReactSelect from "react-select";
 import { MDBBadge } from "mdb-react-ui-kit";
-const EditRestaurant = (props) => {
+const EditProfile = (props) => {
   var { restaurantDetails, openEdit, setOpenEdit,resetEdit,randomId } = props;
   const [restaurantName, SetRestaurantName] = useState(
     restaurantDetails.restaurantName
@@ -72,7 +72,7 @@ setRegCallID(Date.now().toString());
    
   };
   const RegisterURL =
-    ConfigData.ServerAddress + "/superadmin/addoredit-RestaurantAdmin";
+    ConfigData.ServerAddress + "/admin/edit-profile";
 
   const onSubmit = (e) => {
     
@@ -97,12 +97,11 @@ setRegCallID(Date.now().toString());
  
     setPassword(e.target.value);
   }
-  const registerUser = (registerData) => {
+  const registerUser = async(registerData) => {
     axios.defaults.withCredentials = true;
-    axios
+   await axios
       .post(RegisterURL, {
         body: registerData,
-        
       })
       .then((res) => {
         if (res.status == 200) {
@@ -257,4 +256,4 @@ setRegCallID(Date.now().toString());
   );
 };
 
-export default EditRestaurant;
+export default EditProfile;

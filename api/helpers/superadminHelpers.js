@@ -10,12 +10,13 @@ module.exports = {
   // Registering new restaurant details
   registerRestaurant: (dataToSave) => {
     return new Promise(async (resolve, reject) => {
+      console.log(dataToSave.password);
       var bcryptedPassword = await bcrypt.hash(dataToSave.password, 10);
       dataToSave.password = bcryptedPassword;
       dataToSave.role = "admin";
       delete dataToSave.id;
       db.get()
-        .collection(collection.RESTAURANT_ADMIN)
+        .collection(collection.USERS)
         .insertOne(dataToSave)
         .then((response) => {
           resolve(response);
@@ -29,8 +30,8 @@ module.exports = {
     return new Promise(async (resolve, reject) => {
       let RestaurantData = db
         .get()
-        .collection(collection.RESTAURANT_ADMIN)
-        .find()
+        .collection(collection.USERS)
+        .find({role:"admin"})
         .toArray();
       resolve(RestaurantData);
     });
@@ -39,7 +40,7 @@ module.exports = {
   UpdateRestaurant: (prodDetails) => {
     return new Promise(async (resove, reject) => {
       db.get()
-        .collection(collection.RESTAURANT_ADMIN)
+        .collection(collection.USERS)
         .updateOne(
           { _id: ObjectId(prodDetails.id) },
           {
@@ -59,37 +60,16 @@ module.exports = {
     });
   },
 
-  //Login superadmin
+ 
 
-  Login: (data) => {
-    return new Promise(async (resolve, reject) => {
-      let superAdmin = await db
-        .get()
-        .collection(collection.SUPER_ADMIN)
-        .findOne({ email: data.email });
 
-      if (superAdmin) {
-        if (superAdmin.password == data.password) {
-          const token = jwt.sign(
-            { id: superAdmin._id, role: superAdmin.role },
-            auth.JWTTOKEN
-          );
-          resolve(superAdmin, token);
-        } else {
-          reject({ err: "Email or password incorrect" });
-        }
-      } else {
-        reject({ err: "Email or password incorrect" });
-      }
-    });
-  },
 
   //delete the excisting user
 
   DeleteUser: (id) => {
     return new Promise((resolve, reject) => {
       db.get()
-        .collection(collection.RESTAURANT_ADMIN)
+        .collection(collection.USERS)
         .deleteOne({ _id: ObjectId(id) })
         .then((response) => {
           resolve({ message: "user deleted" });
@@ -102,7 +82,7 @@ module.exports = {
   changeStatus: (id, status) => {
     return new Promise((resolve, reject) => {
       db.get()
-        .collection(collection.RESTAURANT_ADMIN)
+        .collection(collection.USERS)
         .updateOne(
           { _id: ObjectId(id) },
           {

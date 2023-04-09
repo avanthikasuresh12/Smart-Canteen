@@ -24,6 +24,7 @@ const DefaultRestaurantDet = {
   password: "",
 };
 const SuperAdminHome = () => {
+  const [isSuperAdmin,setisSuperAdmin]=useState(false);
   const [restaurants, SetRestaurants] = useState([]);
   const [openEdit, setOpenEdit] = useState(false);
   const [editDetails, setEditDetails] = useState(DefaultRestaurantDet);
@@ -39,6 +40,15 @@ const SuperAdminHome = () => {
       SetRestaurants(response.data);
     });
   }, [changeDataId]);
+  useEffect(()=>{
+    let user= localStorage.getItem("user")
+    user=JSON.parse(user)
+if(user.role=="superAdmin"){
+  setisSuperAdmin(true)
+}else{
+  setisSuperAdmin(false)
+}
+  },[])
   const ResetEditDetails = () => {
     setEditDetails(DefaultRestaurantDet);
     setRandomId(Date.now().toString());
@@ -55,7 +65,7 @@ const SuperAdminHome = () => {
   };
   const  handleStatusChange=(id,status)=>{
  const statusEditURL=HomeUrl+"/change-status";
- 
+ axios.defaults.withCredentials=true;
  axios
  .post(statusEditURL, {
    id: id,
@@ -127,6 +137,7 @@ const SuperAdminHome = () => {
   const data = {
     data: restaurants.map((e) => {
       return (
+     
         <tr>
           <td>
             <div className="d-flex align-items-center">
@@ -210,6 +221,7 @@ const SuperAdminHome = () => {
 
   return (
     <>
+       {isSuperAdmin?
       <div>
         <Button
           onClick={() => {
@@ -238,7 +250,11 @@ const SuperAdminHome = () => {
           setOpenView={setOpenView}
           resetEdit={ResetEditDetails}
           />
-      </div>
+      </div>:<div>
+
+        You dont have acces to this page
+        
+        </div>}
     </>
   );
 };

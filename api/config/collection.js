@@ -1,8 +1,7 @@
 module.exports={
 
 
-    RESTAURANT_ADMIN:'restaurant_admin',
-    SUPER_ADMIN:"super_admin",
+   USERS:"users",
     CATEGORY:"category",
     MENU_ITEM:"menu_item",
     TABLE:"table"

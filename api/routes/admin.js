@@ -18,9 +18,10 @@ router.post("/login", async function (req, res) {
 
 // edit the hotels profile
 router.post("/edit-profile", (req, res) => {
-  const id = req.body.id;
-  const updateDetails = req.body;
-  adminHelpers.editProfile(id, updateDetails).then((response) => {
+  console.log("/edit-profile");
+ 
+  const updateDetails = req.body.body;
+  adminHelpers.editProfile( updateDetails).then((response) => {
     res.send(response);
   });
 });
@@ -149,5 +150,15 @@ router.get("/delete-table",(req,res)=>{
     res.send(response)
   })
 })
+
+//get single restaurant
+router.post("/restaurant",(req,res)=>{
+  const id=req.body.id;
+  console.log(id);
+  adminHelpers.getRestaurant(id).then((response)=>{
+    res.send(response)
+  })
+})
+ 
 
 module.exports = router;
