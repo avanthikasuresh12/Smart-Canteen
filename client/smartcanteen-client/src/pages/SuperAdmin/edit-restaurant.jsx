@@ -30,18 +30,23 @@ const EditRestaurant = (props) => {
   const [isSubmit, setisSubmit] = useState("");
   const [active,setActive]=useState(restaurantDetails.active)
   const [password,setPassword]=useState("")
+  const [state,setState]=useState(restaurantDetails.state)
+  const [city,setCity]=useState(restaurantDetails.city)
+  const [district,setDistrict]=useState(restaurantDetails.district)
   const [regCallID,setRegCallID]=useState("");
  
   axios.defaults.withCredentials=true;
   useEffect(() => {
     if (Object.keys(error).length == 0 && isSubmit) {
+      console.log(2);
       registerUser(registerationDetails);
     } else {
+      console.log(Object.keys(error).length+"hai"+isSubmit);
       setisSubmit(false);
     }
   },[regCallID]);
   const setCheckError=()=>{
- 
+ console.log("spmeth");
 setRegCallID(Date.now().toString());
   }
   const hotelStatusOption=[
@@ -54,7 +59,6 @@ setRegCallID(Date.now().toString());
      
    ]
   useEffect(() => {
-    console.log("useEffect");
     SetRestaurantName(restaurantDetails.restaurantName);
     setAdminName(restaurantDetails.adminName);
     setCategory(restaurantDetails.category);
@@ -64,6 +68,9 @@ setRegCallID(Date.now().toString());
     setId(restaurantDetails._id);
     setActive(restaurantDetails.active)
     setPassword(restaurantDetails.password)
+    setDistrict(restaurantDetails.district)
+    setCity(restaurantDetails.city)
+    setState(restaurantDetails.state)
   }, [restaurantDetails,randomId]);
   const HandleClose = () => {
     setOpenEdit(false)
@@ -85,9 +92,12 @@ setRegCallID(Date.now().toString());
       phone: phone,
       email: email,
       active:active,
+      district:district,
+      state:state,
+      city:city,
       password:id==0 ? password :0,
     };
-
+console.log(registerationDetails);
     setRegisterationDetails(registerDetails);
     setError(validateDetails(registerDetails));
     setisSubmit(true);
@@ -98,6 +108,7 @@ setRegCallID(Date.now().toString());
     setPassword(e.target.value);
   }
   const registerUser = (registerData) => {
+    console.log("register");
     axios.defaults.withCredentials = true;
     axios
       .post(RegisterURL, {
@@ -131,6 +142,13 @@ setRegCallID(Date.now().toString());
     }
     if (!data.email) {
       error.email = "Email   required !!";
+    }
+    if (!data.city) {
+      error.city = "City   required !!";
+    } if (!data.state) {
+      error.state = "State   required !!";
+    } if (!data.district) {
+      error.state = "District   required !!";
     }
 
     return error;
@@ -184,18 +202,9 @@ setRegCallID(Date.now().toString());
                   />
                   <p>{error.category}</p>
                 </div>
+                
               </Grid>
-              <Grid item s={2}>
-                <TextField
-                  id="outlined-basic"
-                  label="Phone"
-                  variant="outlined"
-                  value={phone}
-                  onChange={(e) => setPhone(e.target.value)}
-                  style={{ paddingBottom: "20px" }}
-                />
-                <p>{error.phone}</p>
-              </Grid>
+            
             </Grid>
             <Grid container spacing={6}>
               <Grid item s={2}>
@@ -208,24 +217,64 @@ setRegCallID(Date.now().toString());
                   style={{ paddingBottom: "20px" }}
                 />
                 <p>{error.email}</p>
-              </Grid>{ restaurantDetails._id==0?  
+              </Grid>
+            
               <Grid item s={2}>
                 <TextField
                   id="outlined-basic"
-                  label="Password"
+                  label="Phone"
                   variant="outlined"
-                  type="password"
-                  value={password}
-                  onChange={(e) => HandlePassword(e)}
+                  value={phone}
+                  onChange={(e) => setPhone(e.target.value)}
                   style={{ paddingBottom: "20px" }}
                 />
                 <p>{error.email}</p>
-              </Grid>:<></>
-}
+              </Grid>
+              
+              <Grid item s={2}>
+              <h3>Address</h3>
+                <TextField
+                  id="outlined-basic"
+                  label="City"
+                  variant="outlined"
+                  value={city}
+                  onChange={(e) => setCity(e.target.value)}
+                  style={{ paddingBottom: "20px" }}
+                />
+                <p>{error.city}</p>
+              </Grid>
+              
+    
               
               
             </Grid>
+            <Grid container spacing={6}>
             <Grid item s={2}>
+                <TextField
+                  id="outlined-basic"
+                  label="District"
+                  variant="outlined"
+                  value={district}
+                  onChange={(e) => setDistrict(e.target.value)}
+                  style={{ paddingBottom: "20px" }}
+                />
+                <p>{error.district}</p>
+                
+              </Grid>
+              <Grid item s={2}>
+                <TextField
+                  id="outlined-basic"
+                  label="State"
+                  variant="outlined"
+                  value={state}
+                  onChange={(e) => setState(e.target.value)}
+                  style={{ paddingBottom: "20px" }}
+                />
+                <p>{error.state}</p>
+              </Grid>
+              </Grid>
+            <Grid item s={2}>
+              <h3>Active status</h3>
             <div style={{ width: "220px" }}>
                   <ReactSelect
                     maxMenuHeight={"200px"}
@@ -242,7 +291,23 @@ setRegCallID(Date.now().toString());
                   <p>{error.category}</p>
                 </div>
                 <p>{error.adminName}</p>
+                
               </Grid>
+              
+              { restaurantDetails._id==0?  
+              <Grid item s={2}>
+                
+                <TextField
+                  id="outlined-basic"
+                  label="Password"
+                  variant="outlined"
+                  type="password"
+                  value={password}
+                  onChange={(e) => HandlePassword(e)}
+                  style={{ paddingBottom: "20px" }}
+                />
+                <p>{error.password}</p>
+              </Grid>:<></>}
             <div>
               <Button type="submit">Submit</Button>
             </div>

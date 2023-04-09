@@ -51,6 +51,9 @@ module.exports = {
               phone: prodDetails.phone,
               email: prodDetails.email,
               active: prodDetails.active,
+              city:prodDetails.city,
+              state:prodDetails.state,
+              district:prodDetails.district
             },
           }
         )

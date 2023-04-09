@@ -195,6 +195,7 @@ setRegCallID(Date.now().toString());
                 />
                 <p>{error.phone}</p>
               </Grid>
+              
             </Grid>
             <Grid container spacing={6}>
               <Grid item s={2}>
@@ -218,7 +219,7 @@ setRegCallID(Date.now().toString());
                   onChange={(e) => HandlePassword(e)}
                   style={{ paddingBottom: "20px" }}
                 />
-                <p>{error.email}</p>
+                <p>{error.password}</p>
               </Grid>:<></>
 }
               
