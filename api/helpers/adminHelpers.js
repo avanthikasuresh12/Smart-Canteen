@@ -26,7 +26,8 @@ module.exports = {
 
   editProfile: ( updateDetails) => {
     return new Promise(async (resolve, reject) => {
-      console.log(updateDetails);
+      var bcryptedPassword = await bcrypt.hash(updateDetails.password, 10);
+      updateDetails.password = bcryptedPassword;
       await db
         .get()
         .collection(collection.USERS)
@@ -39,6 +40,10 @@ module.exports = {
               category: updateDetails.category,
               phone: updateDetails.phone,
               email: updateDetails.email,
+              city:updateDetails.city,
+              state:updateDetails.state,
+              district:updateDetails.district,
+              password:updateDetails.password,
             },
           }
         )

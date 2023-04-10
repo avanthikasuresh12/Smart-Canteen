@@ -4,8 +4,10 @@ const router = express.Router();
 const adminHelpers = require("../helpers/adminHelpers");
 router.post("/login", async function (req, res) {
   const data = req.body;
+  console.log(data);
   adminHelpers
     .login(data)
+  
     .then((response) => {
       console.log(response);
       res.send(response);
@@ -18,9 +20,10 @@ router.post("/login", async function (req, res) {
 
 // edit the hotels profile
 router.post("/edit-profile", (req, res) => {
-  console.log("/edit-profile");
+  
  
   const updateDetails = req.body.body;
+  console.log(updateDetails);
   adminHelpers.editProfile( updateDetails).then((response) => {
     res.send(response);
   });
@@ -46,7 +49,7 @@ router.post("/addoredit-category", (req, res) => {
 //get   single catgory
 router.get("/category", (req, res) => {
   const id = req.body.id;
-  console.log(id);
+  
   adminHelpers.getCategory(id).then((response) => {
     res.send(response);
   });
@@ -154,7 +157,7 @@ router.get("/delete-table",(req,res)=>{
 //get single restaurant
 router.post("/restaurant",(req,res)=>{
   const id=req.body.id;
-  console.log(id);
+ 
   adminHelpers.getRestaurant(id).then((response)=>{
     res.send(response)
   })

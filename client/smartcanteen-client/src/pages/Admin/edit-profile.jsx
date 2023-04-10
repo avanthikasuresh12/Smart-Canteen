@@ -15,7 +15,7 @@ import CategoryOptions from "../../config/restaurantCategories";
 import ReactSelect from "react-select";
 import { MDBBadge } from "mdb-react-ui-kit";
 const EditProfile = (props) => {
-  var { restaurantDetails, openEdit, setOpenEdit,resetEdit,randomId } = props;
+  var { restaurantDetails, openEdit, setOpenEdit, resetEdit, randomId } = props;
   const [restaurantName, SetRestaurantName] = useState(
     restaurantDetails.restaurantName
   );
@@ -28,33 +28,43 @@ const EditProfile = (props) => {
   const [error, setError] = useState("");
   const [registerationDetails, setRegisterationDetails] = useState("");
   const [isSubmit, setisSubmit] = useState("");
-  const [active,setActive]=useState(restaurantDetails.active)
-  const [password,setPassword]=useState("")
-  const [regCallID,setRegCallID]=useState("");
- 
-  axios.defaults.withCredentials=true;
+  const [active, setActive] = useState(restaurantDetails.active);
+  const [password, setPassword] = useState("");
+    const [state,setState]=useState(restaurantDetails.state)
+  const [city,setCity]=useState(restaurantDetails.city)
+  const [district,setDistrict]=useState(restaurantDetails.district)
+  const [regCallID, setRegCallID] = useState("");
+
+  axios.defaults.withCredentials = true;
   useEffect(() => {
     if (Object.keys(error).length == 0 && isSubmit) {
       registerUser(registerationDetails);
     } else {
       setisSubmit(false);
     }
-  },[regCallID]);
-  const setCheckError=()=>{
- 
-setRegCallID(Date.now().toString());
-  }
-  const hotelStatusOption=[
-    { value:true, label:   <MDBBadge color='success' pill>
-    Active
-  </MDBBadge> },
-    { value:false, label:   <MDBBadge color='danger' pill>
-   De Active
-  </MDBBadge> },
-     
-   ]
+  }, [regCallID]);
+  const setCheckError = () => {
+    setRegCallID(Date.now().toString());
+  };
+  const hotelStatusOption = [
+    {
+      value: true,
+      label: (
+        <MDBBadge color="success" pill>
+          Active
+        </MDBBadge>
+      ),
+    },
+    {
+      value: false,
+      label: (
+        <MDBBadge color="danger" pill>
+          De Active
+        </MDBBadge>
+      ),
+    },
+  ];
   useEffect(() => {
-    console.log("useEffect");
     SetRestaurantName(restaurantDetails.restaurantName);
     setAdminName(restaurantDetails.adminName);
     setCategory(restaurantDetails.category);
@@ -62,20 +72,20 @@ setRegCallID(Date.now().toString());
     setEmail(restaurantDetails.email);
     setStatus(restaurantDetails.status);
     setId(restaurantDetails._id);
-    setActive(restaurantDetails.active)
-    setPassword(restaurantDetails.password)
-  }, [restaurantDetails,randomId]);
+    setActive(restaurantDetails.active);
+    setPassword(restaurantDetails.password);
+    setDistrict(restaurantDetails.district)
+    setCity(restaurantDetails.city)
+    setState(restaurantDetails.state)
+  }, [restaurantDetails, randomId]);
   const HandleClose = () => {
-    setOpenEdit(false)
-    setError("")
+    setOpenEdit(false);
+    setError("");
     resetEdit();
-   
   };
-  const RegisterURL =
-    ConfigData.ServerAddress + "/admin/edit-profile";
+  const RegisterURL = ConfigData.ServerAddress + "/admin/edit-profile";
 
   const onSubmit = (e) => {
-    
     e.preventDefault();
     const registerDetails = {
       id: id,
@@ -84,28 +94,29 @@ setRegCallID(Date.now().toString());
       category: category,
       phone: phone,
       email: email,
-      active:active,
-      password:id==0 ? password :0,
+      district:district,
+      state:state,
+      city:city,
+      password:password,
     };
-
+  
     setRegisterationDetails(registerDetails);
     setError(validateDetails(registerDetails));
     setisSubmit(true);
-    setCheckError()
+    setCheckError();
   };
-  const HandlePassword=(e)=>{
- 
+  const HandlePassword = (e) => {
     setPassword(e.target.value);
-  }
-  const registerUser = async(registerData) => {
+  };
+  const registerUser = async (registerData) => {
     axios.defaults.withCredentials = true;
-   await axios
+    await axios
       .post(RegisterURL, {
         body: registerData,
       })
       .then((res) => {
         if (res.status == 200) {
-         restaurantDetails={}
+          restaurantDetails = {};
           HandleClose();
         }
       });
@@ -130,6 +141,13 @@ setRegCallID(Date.now().toString());
     }
     if (!data.email) {
       error.email = "Email   required !!";
+    }
+    if (!data.city) {
+      error.city = "City   required !!";
+    } if (!data.state) {
+      error.state = "State   required !!";
+    } if (!data.district) {
+      error.state = "District   required !!";
     }
 
     return error;
@@ -171,11 +189,14 @@ setRegCallID(Date.now().toString());
                 <div style={{ width: "220px" }}>
                   <ReactSelect
                     maxMenuHeight={"200px"}
-                    defaultValue={     restaurantDetails._id==0 ? {label:"category",value:""}:{
-                 
-                      label: restaurantDetails.category,
-                      value: restaurantDetails.category,
-                    }}
+                    defaultValue={
+                      restaurantDetails._id == 0
+                        ? { label: "category", value: "" }
+                        : {
+                            label: restaurantDetails.category,
+                            value: restaurantDetails.category,
+                          }
+                    }
                     options={CategoryOptions}
                     onChange={(e) => {
                       HandleCateogoryChange(e);
@@ -194,10 +215,8 @@ setRegCallID(Date.now().toString());
                   style={{ paddingBottom: "20px" }}
                 />
                 <p>{error.phone}</p>
+
               </Grid>
-              
-            </Grid>
-            <Grid container spacing={6}>
               <Grid item s={2}>
                 <TextField
                   id="outlined-basic"
@@ -208,41 +227,65 @@ setRegCallID(Date.now().toString());
                   style={{ paddingBottom: "20px" }}
                 />
                 <p>{error.email}</p>
-              </Grid>{ restaurantDetails._id==0?  
+              </Grid>
+            </Grid>
+            <Grid container spacing={6}>
+          
               <Grid item s={2}>
+                <h3>Address</h3>
+                <TextField
+                  id="outlined-basic"
+                  label="City"
+                  variant="outlined"
+                  value={city}
+                  onChange={(e) => setCity(e.target.value)}
+                  style={{ paddingBottom: "20px" }}
+                />
+                <p>{error.city}</p>
+              </Grid>
+            </Grid>
+            <Grid container spacing={6}>
+              <Grid item s={2}>
+                <TextField
+                  id="outlined-basic"
+                  label="District"
+                  variant="outlined"
+                  value={district}
+                  onChange={(e) => setDistrict(e.target.value)}
+                  style={{ paddingBottom: "20px" }}
+                />
+                <p>{error.district}</p>
+              </Grid>
+              <Grid item s={2}>
+                <TextField
+                  id="outlined-basic"
+                  label="State"
+                  variant="outlined"
+                  value={state}
+                  onChange={(e) => setState(e.target.value)}
+                  style={{ paddingBottom: "20px" }}
+                />
+                <p>{error.state}</p>
+              </Grid>
+            </Grid>
+        
+            
+              <Grid item s={2} className="mt-9">
+
+                <h3> Change Password</h3>
                 <TextField
                   id="outlined-basic"
                   label="Password"
                   variant="outlined"
                   type="password"
-                  value={password}
+                 value={password}
                   onChange={(e) => HandlePassword(e)}
                   style={{ paddingBottom: "20px" }}
                 />
                 <p>{error.password}</p>
-              </Grid>:<></>
-}
-              
-              
-            </Grid>
-            <Grid item s={2}>
-            <div style={{ width: "220px" }}>
-                  <ReactSelect
-                    maxMenuHeight={"200px"}
-                    placeholder={restaurantDetails.active?  <MDBBadge color='success' pill>
-                    Active
-                  </MDBBadge>:  <MDBBadge color='danger' pill>
-                    De Active
-                  </MDBBadge>}
-                    options={hotelStatusOption}
-                    onChange={(e) => {
-                     setActive(e.value)
-                    }}
-                  />
-                  <p>{error.category}</p>
-                </div>
-                <p>{error.adminName}</p>
               </Grid>
+          
+           
             <div>
               <Button type="submit">Submit</Button>
             </div>

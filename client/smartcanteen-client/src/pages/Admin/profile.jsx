@@ -99,12 +99,6 @@ setOpenEdit(true)
                           </MDBCardText>
                         </MDBCol>
                         <MDBCol size="6" className="mb-3">
-                          <MDBTypography tag="h6">Place</MDBTypography>
-                          <MDBCardText className="text-muted">
-                           {restaurant.place}
-                          </MDBCardText>
-                        </MDBCol>
-                        <MDBCol size="6" className="mb-3">
                           <MDBTypography tag="h6">City</MDBTypography>
                           <MDBCardText className="text-muted">
                            {restaurant.city}
@@ -114,6 +108,12 @@ setOpenEdit(true)
                           <MDBTypography tag="h6">District</MDBTypography>
                           <MDBCardText className="text-muted">
                            {restaurant.district}
+                          </MDBCardText>
+                        </MDBCol>
+                        <MDBCol size="6" className="mb-3">
+                          <MDBTypography tag="h6">State</MDBTypography>
+                          <MDBCardText className="text-muted">
+                           {restaurant.state}
                           </MDBCardText>
                         </MDBCol>
 

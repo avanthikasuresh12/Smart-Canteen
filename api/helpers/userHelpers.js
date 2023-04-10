@@ -26,11 +26,13 @@ Login: (data) => {
                     console.log("res"+res);
                     resolve(user)
                 }
+                console.log("err");
                reject({err:"Email or password incorrect"})
               });
         }
         
       } else {
+        console.log("hai");
         reject({ err: "Email or password incorrect" });
       }
     });
