@@ -8,7 +8,7 @@ import RegisterHotel from "./pages/SuperAdmin/RegisterHotel";
 import SuperAdminHome from "./pages/SuperAdmin/home";
 import SignIn from "./pages/login";
 import AdminProfile from "./pages/Admin/profile";
-
+import Category from "./pages/Admin/Category/category";
 const router = createBrowserRouter([
  
   {
@@ -44,6 +44,14 @@ const router = createBrowserRouter([
         </Container>
       ),
     },
+    {
+      path:"admin/category",
+      element:(
+        <Container>
+          <Category/> 
+        </Container>
+      )
+    }
   
 ]);
 function App() {

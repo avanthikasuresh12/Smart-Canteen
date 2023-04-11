@@ -7,54 +7,45 @@ import {
   MDBTableBody,
 } from "mdb-react-ui-kit";
 import Select from "react-select";
-import "./home.css";
 import axios from "axios";
-import ConfigData from "../../config/config";
+import ConfigData from "../../../config/config";
 import { Button } from "@mui/material";
-import EditRestaurant from "./edit-restaurant";
-import ViewRestaurant from "./view";
-const DefaultRestaurantDet = {
+import EditCategory from "./edit-category";
+ 
+const DefaultCategoryDet = {
   _id: 0,
-
-  restaurantName: "",
-  adminName: "",
-  category: "",
-  phone: "",
-  email: "",
-  password: "",
-  city:"",
-  district:"",
-  state:"",
+   name:"",
+   description:""
   
 };
 const SuperAdminHome = () => {
-  const [isSuperAdmin,setisSuperAdmin]=useState(false);
-  const [restaurants, SetRestaurants] = useState([]);
+  const [isAdmin,setisAdmin]=useState(false);
+  const [categories, setCategories] = useState([]);
   const [openEdit, setOpenEdit] = useState(false);
-  const [editDetails, setEditDetails] = useState(DefaultRestaurantDet);
-  const [viewDetails, setviewDetails] = useState(DefaultRestaurantDet);
+  const [editDetails, setEditDetails] = useState(DefaultCategoryDet);
+  const [viewDetails, setviewDetails] = useState(DefaultCategoryDet);
   const [randomId, setRandomId] = useState(Date.now().toString());
   const [changeDataId,setChangeDataId]=useState(0)
   const [openView,setOpenView]=useState(false)
-  const HomeUrl = ConfigData.ServerAddress + "/superadmin";
+  const CategoryURL = ConfigData.ServerAddress + "/admin/category-list";
 
   useEffect(() => {
     
-    axios.get(HomeUrl,{withCredentials: true}).then((response) => {
-      SetRestaurants(response.data);
+    axios.get(CategoryURL,{withCredentials: true}).then((response) => {
+      setCategories(response.data);
     });
   }, [changeDataId]);
   useEffect(()=>{
     let user= localStorage.getItem("user")
     user=JSON.parse(user)
-if(user.role=="superAdmin"){
-  setisSuperAdmin(true)
+if(user.role=="admin"){
+  setisAdmin(true)
 }else{
-  setisSuperAdmin(false)
+  setisAdmin(false)
 }
   },[])
   const ResetEditDetails = () => {
-    setEditDetails(DefaultRestaurantDet);
+    setEditDetails(DefaultCategoryDet);
     setRandomId(Date.now().toString());
     setChangeDataId(Date.now().toString());
   };
@@ -67,67 +58,30 @@ if(user.role=="superAdmin"){
     setviewDetails(viewDet);
     setOpenView(true);
   };
-  const  handleStatusChange=(id,status)=>{
- const statusEditURL=HomeUrl+"/change-status";
- axios.defaults.withCredentials=true;
- axios
- .post(statusEditURL, {
-   id: id,
-   status:status,
- })
-
-  }
+  
   const handleDelete = (id) => {
     
-    const delelteUrl = HomeUrl + "/delete";
-    axios
-      .post(delelteUrl, {
-        id: id,
-      })
-      .then((res) => {
-        if (res.status == 200) {
-          setChangeDataId(Date.now().toString())
-        }
-      });
+    // const delelteUrl = HomeUrl + "/delete";
+    // axios
+    //   .post(delelteUrl, {
+    //     id: id,
+    //   })
+    //   .then((res) => {
+    //     if (res.status == 200) {
+    //       setChangeDataId(Date.now().toString())
+    //     }
+    //   });
   };
-  const hotelStatusOption = [
-    {
-      value: true,
-      label: (
-        <MDBBadge color="success" pill>
-          Active
-        </MDBBadge>
-      ),
-    },
-    {
-      value:false,
-      label: (
-        <MDBBadge color="danger" pill>
-          De Active
-        </MDBBadge>
-      ),
-    },
-  ];
+  
 
   const ColumnsData = [
     {
-      name: "Restaurant Name",
+      name: "Categor Name",
     },
     {
-      name: "Admin Name",
+      name: "Description",
     },
-    {
-      name: "Category",
-    },
-    {
-      name: "Phone",
-    },
-    {
-      name: "Email",
-    },
-    {
-      name: "Status",
-    },
+    
     {
       name: "Action",
     },
@@ -139,47 +93,21 @@ if(user.role=="superAdmin"){
     }),
   };
   const data = {
-    data: restaurants.map((e) => {
+    data: categories.map((e) => {
       return (
      
         <tr>
           <td>
             <div className="d-flex align-items-center">
               <div className="ms-3">
-                <p className="fw-bold mb-1">{e.restaurantName}</p>
+                <p className="fw-bold mb-1">{e.name}</p>
               </div>
             </div>
           </td>
           <td>
-            <p className="fw-normal mb-1">{e.adminName}</p>
+            <p className="fw-normal mb-1">{e.description}</p>
           </td>
-          <td>
-            <p> {e.category}</p>
-          </td>
-          <td>
-            <p>{e.phone}</p>
-          </td>
-          <td>
-            <p>{e.email}</p>
-          </td>
-          <td>
-            <Select
-              placeholder={
-                e.active ? (
-                  <MDBBadge color="success" pill>
-                    Active
-                  </MDBBadge>
-                ) : (
-                  <MDBBadge color="danger" pill>
-                    De Active
-                  </MDBBadge>
-                )
-              }
-              options={hotelStatusOption}
-              onChange={(status)=>handleStatusChange(e._id,status.value)}
-            />
-          </td>
-          <Button
+           <Button
             style={{
               borderRadius: 5,
               backgroundColor: "white",
@@ -225,11 +153,11 @@ if(user.role=="superAdmin"){
 
   return (
     <>
-       {isSuperAdmin?
+       {isAdmin?
       <div>
         <Button
           onClick={() => {
-            HandleOpenEdit(DefaultRestaurantDet);
+            HandleOpenEdit( DefaultCategoryDet);
           }}
         >
           Add New
@@ -239,21 +167,21 @@ if(user.role=="superAdmin"){
             <tr>{Columns.name}</tr>
           </MDBTableHead>
           <MDBTableBody>{data.data}</MDBTableBody>
-        </MDBTable>
-        <EditRestaurant
-          restaurantDetails={editDetails}
+        </MDBTable> 
+        <EditCategory
+          categoryDetails={editDetails}
           openEdit={openEdit}
           setOpenEdit={setOpenEdit}
           resetEdit={ResetEditDetails}
           randomId={randomId}
           
-        />
-        <ViewRestaurant
+        />  
+        {/* <ViewRestaurant
           restaurantDetails={viewDetails}
           openView={openView}
           setOpenView={setOpenView}
           resetEdit={ResetEditDetails}
-          />
+          />  */}
       </div>:<div>
 
         You dont have acces to this page

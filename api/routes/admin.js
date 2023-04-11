@@ -33,8 +33,10 @@ router.post("/edit-profile", (req, res) => {
 
 router.post("/addoredit-category", (req, res) => {
  
-  const id = req.body.id;
-  const data = req.body 
+  const id = req.session.user._id;
+  const data = req.body.registerData
+  console.log("njna");
+  console.log(data);
   if (data.id == 0) {
     adminHelpers.addCategory(data, id).then((response) => {
       res.send(response);
@@ -64,7 +66,9 @@ router.post("/delete-category", (req, res) => {
 });
 //get category list
 router.get("/category-list", (req, res) => {
-  const restaurantId = req.body.id;
+  console.log("we");
+  console.log(req.session.user);
+  const restaurantId=req.session.user._id;
   adminHelpers.getAllCategory(restaurantId).then((response) => {
     res.send(response);
   });

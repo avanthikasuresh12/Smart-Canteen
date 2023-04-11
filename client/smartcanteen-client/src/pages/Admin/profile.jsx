@@ -19,6 +19,20 @@ export default function AdminProfile() {
   const [isAdmin, setIsAdmin] = useState(false);
   const [restaurant, SetRestaurant] = useState({});
 const [openEdit,setOpenEdit]=useState(false)
+const [randomId, setRandomId] = useState(Date.now().toString());
+const [changeDataId,setChangeDataId]=useState(0)
+const DefaultRestaurantDet = {
+  _id: 0,
+  restaurantName: "",
+  adminName: "",
+  category: "",
+  phone: "",
+  email: "",
+  password: "",
+  city:"",
+  state:"",
+  district:""
+};
   useEffect(() => {
     let user = localStorage.getItem("user");
     user = JSON.parse(user);
@@ -36,11 +50,15 @@ const [openEdit,setOpenEdit]=useState(false)
     } else {
       setIsAdmin(false);
     }
-  }, []);
+  }, [changeDataId]);
   const handleEdit=()=>{
 setOpenEdit(true)
   }
-
+  const ResetEditDetails = () => {
+    SetRestaurant(DefaultRestaurantDet);
+    setRandomId(Date.now().toString());
+    setChangeDataId(Date.now().toString());
+  };
   return (
     <>
       {!isAdmin ? (
@@ -129,6 +147,8 @@ setOpenEdit(true)
           restaurantDetails={restaurant}
           openEdit={openEdit}
           setOpenEdit={setOpenEdit}
+          resetEdit={ResetEditDetails}
+          randomId={randomId}
         />
         </section>
       )}
