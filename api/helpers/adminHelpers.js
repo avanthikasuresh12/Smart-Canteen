@@ -108,6 +108,7 @@ module.exports = {
               available: menuData.available,
               price: menuData.price,
               description: menuData.description, 
+              offer:menuData.offer,
             },
           }
         )
@@ -131,9 +132,10 @@ module.exports = {
 
   deleteMenuItem: (id) => {
     return new Promise((resolve, reject) => {
+      console.log("Some");
       db.get()
         .collection(collection.MENU_ITEM)
-        .deleteOne({ _id: id })
+        .deleteOne({ _id: ObjectId( id) })
         .then(() => {
           resolve({ message: "Item Deleted!!" });
         });

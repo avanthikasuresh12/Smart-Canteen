@@ -130,7 +130,7 @@ const EditCategory = (props) => {
                 
               </Grid>
               <Grid item s={2}>
-                <TextareaAutosize
+                <textarea
                   id="outlined-basic"
                   label="State"
                   variant="outlined"

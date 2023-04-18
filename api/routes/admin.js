@@ -68,7 +68,10 @@ router.post("/delete-category", (req, res) => {
 router.get("/category-list", (req, res) => {
   console.log("we");
   console.log(req.session.user);
-  const restaurantId=req.session.user._id;
+  if(Req.session.user){
+    const restaurantId=req.session.user._id;
+  }
+  
   adminHelpers.getAllCategory(restaurantId).then((response) => {
     res.send(response);
   });
@@ -77,7 +80,8 @@ router.get("/category-list", (req, res) => {
 // add or edit   menu items to the hotel;
 router.post("/addoredit-menuitem", (req, res) => {
   const id = req.body.id;
-  const data = req.body;
+  const data = req.body.data;
+  console.log(data);
   if (data.id == 0) {
     adminHelpers.addMenuItem(data, id).then((response) => {
       res.send(response);
@@ -91,7 +95,10 @@ router.post("/addoredit-menuitem", (req, res) => {
 
 //list all menu item
 router.get("/menu-items-list", async (req, res) => {
-  const restaurantId = 0;
+  var restaurantId;
+  if(req.session.user){
+    restaurantId=req.session.user._id;
+  }
   adminHelpers.getAllMenuItems(restaurantId).then((response) => {
     res.send(response);
   });
@@ -107,7 +114,7 @@ router.get("/menu-item", (req, res) => {
 
 // delete menu item
 
-router.get("/delete-menuitem", (req, res) => {
+router.post("/delete-menuitem", (req, res) => {
   const id = req.body.id;
   console.log(id);
   adminHelpers.deleteMenuItem(id).then((response) => {

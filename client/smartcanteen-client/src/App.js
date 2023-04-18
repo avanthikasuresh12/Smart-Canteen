@@ -3,12 +3,12 @@ import "./App.css";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
 import { Container } from "react-bootstrap";
-
-import RegisterHotel from "./pages/SuperAdmin/RegisterHotel";
 import SuperAdminHome from "./pages/SuperAdmin/home";
 import SignIn from "./pages/login";
 import AdminProfile from "./pages/Admin/profile";
 import Category from "./pages/Admin/Category/category";
+import MenuItem from "./pages/Admin/MenuItem/menu-item";
+
 const router = createBrowserRouter([
  
   {
@@ -49,6 +49,14 @@ const router = createBrowserRouter([
       element:(
         <Container>
           <Category/> 
+        </Container>
+      )
+    },
+    {
+      path:"admin/menu-item",
+      element:(
+        <Container>
+          <MenuItem/>
         </Container>
       )
     }

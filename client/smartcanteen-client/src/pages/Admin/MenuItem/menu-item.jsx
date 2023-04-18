@@ -6,25 +6,31 @@ import {
   MDBTableHead,
   MDBTableBody,
 } from "mdb-react-ui-kit";
-import Select from "react-select";
 import axios from "axios";
 import ConfigData from "../../../config/config";
 import { Button } from "@mui/material";
-import EditCategory from "./edit-category";
-import ViewCategory from "./view-category";
+import EditMenuItem from "./edit-menu-item";
+import ViewMenuItem from "./view-menu-item";
+// import EditCategory from "./edit-category";
+// import ViewCategory from "./view-category";
  
-const DefaultCategoryDet = {
+const defaultMenuDet = {
   _id: 0,
    name:"",
-   description:""
+   description:"",
+   Category:"",
+   price:0,
+   offer:0,
+   available:true,
+   
   
 };
-const SuperAdminHome = () => {
+const MenuItem = () => {
   const [isAdmin,setisAdmin]=useState(false);
-  const [categories, setCategories] = useState([]);
+  const [menuItems, setMenuItems] = useState([]);
   const [openEdit, setOpenEdit] = useState(false);
-  const [editDetails, setEditDetails] = useState(DefaultCategoryDet);
-  const [viewDetails, setviewDetails] = useState(DefaultCategoryDet);
+  const [editDetails, setEditDetails] = useState(defaultMenuDet);
+  const [viewDetails, setviewDetails] = useState(defaultMenuDet);
   const [randomId, setRandomId] = useState(Date.now().toString());
   const [changeDataId,setChangeDataId]=useState(0)
   const [openView,setOpenView]=useState(false)
@@ -32,8 +38,8 @@ const SuperAdminHome = () => {
 
   useEffect(() => {
     
-    axios.get(AdminURL+"/category-list",{withCredentials: true}).then((response) => {
-      setCategories(response.data);
+    axios.get(AdminURL+"/menu-items-list",{withCredentials: true}).then((response) => {
+      setMenuItems(response.data);
     });
   }, [changeDataId]);
   useEffect(()=>{
@@ -46,7 +52,7 @@ if(user.role=="admin"){
 }
   },[])
   const ResetEditDetails = () => {
-    setEditDetails(DefaultCategoryDet);
+    setEditDetails(defaultMenuDet);
     setRandomId(Date.now().toString());
     setChangeDataId(Date.now().toString());
   };
@@ -54,6 +60,7 @@ if(user.role=="admin"){
   const HandleOpenEdit = (editDetails) => {
     setEditDetails(editDetails);
     setOpenEdit(true);
+    console.log("open");
   };
   const HandleOpenView = (viewDet) => {
     setviewDetails(viewDet);
@@ -62,7 +69,7 @@ if(user.role=="admin"){
   
   const handleDelete = (id) => {
     
-    const delelteUrl = AdminURL + "/delete-category";
+    const delelteUrl = AdminURL + "/delete-menuitem";
     axios
       .post(delelteUrl, {
         id: id,
@@ -77,15 +84,30 @@ if(user.role=="admin"){
 
   const ColumnsData = [
     {
-      name: "Categor Name",
+      name: "Item Name",
+    },
+    {
+        name:"Category"
     },
     {
       name: "Description",
     },
     
     {
-      name: "Action",
+      name: "Price",
     },
+    {
+        name: "Offer",
+      },
+      {
+name:"Current Price"
+      },
+      {
+        name: "Available",
+      },
+      {
+        name:"Action"
+      }
   ];
 
   const Columns = {
@@ -94,7 +116,7 @@ if(user.role=="admin"){
     }),
   };
   const data = {
-    data: categories.map((e) => {
+    data: menuItems.map((e) => {
       return (
      
         <tr>
@@ -106,7 +128,25 @@ if(user.role=="admin"){
             </div>
           </td>
           <td>
-            <p className="fw-normal mb-1">{e.description}</p>
+            <p className="fw-normal mb-1">{e.Category}</p>
+          </td>
+          <td>
+            <textarea readOnly
+          className="fw-normal mb-1">{e.description}</textarea>
+          </td>
+          <td>
+            <p className="fw-normal mb-1">{e.price} rs</p>
+          </td>
+
+          <td>
+            <p className="fw-normal mb-1">{e.offer} %</p>
+          </td>
+          <td>
+            <p className="fw-normal mb-1">{e.price-(e.offer/100)*e.price} rs</p>
+          </td>
+          
+          <td>
+            <p className="fw-normal mb-1">{e.available}</p>
           </td>
            <Button
             style={{
@@ -158,7 +198,7 @@ if(user.role=="admin"){
       <div>
         <Button
           onClick={() => {
-            HandleOpenEdit( DefaultCategoryDet);
+            HandleOpenEdit(defaultMenuDet);
           }}
         >
           Add New
@@ -169,16 +209,16 @@ if(user.role=="admin"){
           </MDBTableHead>
           <MDBTableBody>{data.data}</MDBTableBody>
         </MDBTable> 
-        <EditCategory
-          categoryDetails={editDetails}
+       <EditMenuItem
+          menuDetails={editDetails}
           openEdit={openEdit}
           setOpenEdit={setOpenEdit}
           resetEdit={ResetEditDetails}
           randomId={randomId}
-          
         />  
-        <ViewCategory
-          CategoryDetails={viewDetails}
+          
+        <ViewMenuItem
+          menuDetails={viewDetails}
           openView={openView}
           setOpenView={setOpenView}
           resetEdit={ResetEditDetails}
@@ -192,4 +232,4 @@ if(user.role=="admin"){
   );
 };
 
-export default SuperAdminHome;
+export default MenuItem;
