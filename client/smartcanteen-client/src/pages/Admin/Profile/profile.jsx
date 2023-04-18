@@ -13,7 +13,8 @@ import "./profile.css";
 import { Button } from "react-bootstrap";
 import EditProfile from "./edit-profile";
 import axios from "axios";
-import ConfigData from "../../config/config";
+import ConfigData from "../../../config/config";
+
 export default function AdminProfile() {
  
   const [isAdmin, setIsAdmin] = useState(false);
@@ -39,7 +40,7 @@ const DefaultRestaurantDet = {
    const userId= user._id;
     if (user.role == "admin") {
       setIsAdmin(true);
-      console.log(user);
+      axios.defaults.withCredentials = true;
       const ProfileURL=ConfigData.ServerAddress+"/admin/restaurant"
        axios
       .post(ProfileURL, {

@@ -37,9 +37,11 @@ db.connect((err)=>{
 
 app.use(session({
   secret: 'keyboard cat',
-  resave: false,
-  saveUninitialized: false,
-  cookie: { expires:60*60*24}
+  resave: true,
+  saveUninitialized: true,
+  cookie: { expires:60*60*24},
+  store:new mongoStore({url:"mongodb://localhost:27017/costumes"})
+  
 }))
   // Router setup middlewares
   // app.options('http://localhost:3000', cors()) 

@@ -23,7 +23,6 @@ router.post("/edit-profile", (req, res) => {
   
  
   const updateDetails = req.body.body;
-  console.log(updateDetails);
   adminHelpers.editProfile( updateDetails).then((response) => {
     res.send(response);
   });
@@ -32,10 +31,13 @@ router.post("/edit-profile", (req, res) => {
 //add or edit   categories of menu to the hotel
 
 router.post("/addoredit-category", (req, res) => {
+  let id;
+ if(req.session.user){
+   id = req.session.user._id;
+ }
  
-  const id = req.session.user._id;
   const data = req.body.registerData
-  console.log("njna");
+ 
   console.log(data);
   if (data.id == 0) {
     adminHelpers.addCategory(data, id).then((response) => {
@@ -66,10 +68,9 @@ router.post("/delete-category", (req, res) => {
 });
 //get category list
 router.get("/category-list", (req, res) => {
-  console.log("we");
-  console.log(req.session.user);
-  if(Req.session.user){
-    const restaurantId=req.session.user._id;
+  let restaurantId;
+  if(req.session.user){
+     restaurantId=req.session.user._id;
   }
   
   adminHelpers.getAllCategory(restaurantId).then((response) => {
@@ -79,7 +80,10 @@ router.get("/category-list", (req, res) => {
 
 // add or edit   menu items to the hotel;
 router.post("/addoredit-menuitem", (req, res) => {
-  const id = req.body.id;
+  let id ;
+  if(req.session.user){
+    id=req.session.user._id;
+  }
   const data = req.body.data;
   console.log(data);
   if (data.id == 0) {
@@ -125,7 +129,11 @@ router.post("/delete-menuitem", (req, res) => {
 //create or edit new tables
 router.post("/addoredit-table", (req, res) => {
   const data = req.body.data;
-  const restaurantId = req.body.id;
+  let restaurantId;
+  if(req.session.user){
+    restaurantId = req.session.user._id
+  }
+
   if (data.id == 0) {
     adminHelpers.createTable(data, restaurantId).then((response) => {
       res.send(response);
@@ -140,7 +148,10 @@ router.post("/addoredit-table", (req, res) => {
 //get all tables
 
 router.get("/table-list",(req,res)=>{
-  const restaurantId=req.body.id;
+  let restaurantId;
+  if(req.session.user){
+      restaurantId=req.session.user._id;
+  }
   adminHelpers.getAllTables(restaurantId).then((response)=>{
     res.send(response)
   })

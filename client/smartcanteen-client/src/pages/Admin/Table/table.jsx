@@ -10,21 +10,22 @@ import Select from "react-select";
 import axios from "axios";
 import ConfigData from "../../../config/config";
 import { Button } from "@mui/material";
-import EditCategory from "./edit-category";
-import ViewCategory from "./view-category";
+import EditTable from "./edit-table";
+import ViewTable from "./view-table";
+// import EditCategory from "./edit-category";
+// import ViewCategory from "./view-category";
  
-const DefaultCategoryDet = {
+const defaultTableDetails = {
   _id: 0,
-   name:"",
-   description:""
-  
+  number:0,
+  capacity:0,
 };
-const SuperAdminHome = () => {
+const Table = () => {
   const [isAdmin,setisAdmin]=useState(false);
-  const [categories, setCategories] = useState([]);
+  const [tables, setTables] = useState([]);
   const [openEdit, setOpenEdit] = useState(false);
-  const [editDetails, setEditDetails] = useState(DefaultCategoryDet);
-  const [viewDetails, setviewDetails] = useState(DefaultCategoryDet);
+  const [editDetails, setEditDetails] = useState(defaultTableDetails);
+  const [viewDetails, setviewDetails] = useState(defaultTableDetails);
   const [randomId, setRandomId] = useState(Date.now().toString());
   const [changeDataId,setChangeDataId]=useState(0)
   const [openView,setOpenView]=useState(false)
@@ -32,8 +33,10 @@ const SuperAdminHome = () => {
 
   useEffect(() => {
     axios.defaults.withCredentials = true;
-    axios.get(AdminURL+"/category-list",{withCredentials: true}).then((response) => {
-      setCategories(response.data);
+    axios.get(AdminURL+"/table-list",{withCredentials: true}).then((response) => {
+        console.log("somthing");
+
+console.log(response.data);        setTables(response.data);
     });
   }, [changeDataId]);
   useEffect(()=>{
@@ -46,7 +49,7 @@ if(user.role=="admin"){
 }
   },[])
   const ResetEditDetails = () => {
-    setEditDetails(DefaultCategoryDet);
+    setEditDetails(defaultTableDetails);
     setRandomId(Date.now().toString());
     setChangeDataId(Date.now().toString());
   };
@@ -77,10 +80,10 @@ if(user.role=="admin"){
 
   const ColumnsData = [
     {
-      name: "Category Name",
+      name: "Table Number",
     },
     {
-      name: "Description",
+      name: "Seating Capacity",
     },
     
     {
@@ -94,19 +97,19 @@ if(user.role=="admin"){
     }),
   };
   const data = {
-    data: categories.map((e) => {
+    data: tables.map((e) => {
       return (
      
         <tr>
           <td>
             <div className="d-flex align-items-center">
               <div className="ms-3">
-                <p className="fw-bold mb-1">{e.name}</p>
+                <p className="fw-bold mb-1">{e.number}</p>
               </div>
             </div>
           </td>
           <td>
-            <p className="fw-normal mb-1">{e.description}</p>
+            <p className="fw-normal mb-1">{e.capacity}</p>
           </td>
            <Button
             style={{
@@ -158,7 +161,7 @@ if(user.role=="admin"){
       <div>
         <Button
           onClick={() => {
-            HandleOpenEdit( DefaultCategoryDet);
+            HandleOpenEdit( defaultTableDetails);
           }}
         >
           Add New
@@ -169,20 +172,21 @@ if(user.role=="admin"){
           </MDBTableHead>
           <MDBTableBody>{data.data}</MDBTableBody>
         </MDBTable> 
-        <EditCategory
-          categoryDetails={editDetails}
+       <EditTable
+          tableDetails={editDetails}
           openEdit={openEdit}
           setOpenEdit={setOpenEdit}
           resetEdit={ResetEditDetails}
           randomId={randomId}
           
         />  
-        <ViewCategory
-          CategoryDetails={viewDetails}
+         
+        <ViewTable
+          tableDetails={viewDetails}
           openView={openView}
           setOpenView={setOpenView}
           resetEdit={ResetEditDetails}
-          />   
+          />    
       </div>:<div>
 
         You dont have acces to this page
@@ -192,4 +196,4 @@ if(user.role=="admin"){
   );
 };
 
-export default SuperAdminHome;
+export default Table;

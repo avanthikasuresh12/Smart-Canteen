@@ -97,7 +97,7 @@ const EditMenuItem = (props) => {
  
   const registerUser = async (registerData) => {
     axios.defaults.withCredentials = true;
-    console.log("iam "+registerData);
+    
     await axios
       .post(menuAddUR, {
      data:registerData

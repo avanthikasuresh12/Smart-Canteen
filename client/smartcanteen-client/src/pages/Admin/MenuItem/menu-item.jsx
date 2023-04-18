@@ -37,7 +37,7 @@ const MenuItem = () => {
   const AdminURL = ConfigData.ServerAddress + "/admin";
 
   useEffect(() => {
-    
+    axios.defaults.withCredentials = true;
     axios.get(AdminURL+"/menu-items-list",{withCredentials: true}).then((response) => {
       setMenuItems(response.data);
     });
@@ -68,7 +68,7 @@ if(user.role=="admin"){
   };
   
   const handleDelete = (id) => {
-    
+    axios.defaults.withCredentials = true;
     const delelteUrl = AdminURL + "/delete-menuitem";
     axios
       .post(delelteUrl, {

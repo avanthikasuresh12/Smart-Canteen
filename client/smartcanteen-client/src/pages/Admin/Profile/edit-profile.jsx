@@ -10,8 +10,8 @@ import {
 
 import Grid from "@mui/material/Grid"; // Grid version 1
 import axios from "axios";
-import ConfigData from "../../config/config";
-import CategoryOptions from "../../config/restaurantCategories";
+import ConfigData from "../../../config/config";
+import CategoryOptions from "../../../config/restaurantCategories";
 import ReactSelect from "react-select";
 import { MDBBadge } from "mdb-react-ui-kit";
 const EditProfile = (props) => {

@@ -222,14 +222,16 @@ module.exports = {
         .collection(collection.TABLE)
         .find({ restaurnat_id: restaurnatId })
         .toArray()
-        .then(() => {
+         
           resolve(tables);
-        });
+       
     }); 
   },
 
   createTable:(data,restaurantId)=>{
     return new Promise(async (resolve, reject) => {
+      console.log("resraurant");
+      console.log(restaurantId);
       data.restaurnat_id = restaurantId;
       await db
         .get()
@@ -249,8 +251,8 @@ module.exports = {
           { _id: ObjectId(data.id) },
           {
             $set: {
-              number:data.tableNO,
-              seatCount:data.seatCount,
+              number:data.number,
+              capacity:data.capacity,
             },
           }
         )
