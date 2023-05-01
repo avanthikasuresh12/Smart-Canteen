@@ -87,6 +87,9 @@ if(user.role=="admin"){
       name: "Item Name",
     },
     {
+      name:"Image"
+    },
+    {
         name:"Category"
     },
     {
@@ -126,6 +129,9 @@ name:"Current Price"
                 <p className="fw-bold mb-1">{e.name}</p>
               </div>
             </div>
+          </td>
+          <td>
+            <img src={e.imagePath} />
           </td>
           <td>
             <p className="fw-normal mb-1">{e.Category}</p>

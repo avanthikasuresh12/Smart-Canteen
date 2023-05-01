@@ -14,6 +14,7 @@ import { Button } from "react-bootstrap";
 import EditProfile from "./edit-profile";
 import axios from "axios";
 import ConfigData from "../../../config/config";
+import { useParams } from "react-router-dom";
 
 export default function AdminProfile() {
  
@@ -22,6 +23,9 @@ export default function AdminProfile() {
 const [openEdit,setOpenEdit]=useState(false)
 const [randomId, setRandomId] = useState(Date.now().toString());
 const [changeDataId,setChangeDataId]=useState(0)
+const params=    useParams();
+console.log("hey");
+console.log(params);
 const DefaultRestaurantDet = {
   _id: 0,
   restaurantName: "",
@@ -35,6 +39,7 @@ const DefaultRestaurantDet = {
   district:""
 };
   useEffect(() => {
+
     let user = localStorage.getItem("user");
     user = JSON.parse(user);
    const userId= user._id;

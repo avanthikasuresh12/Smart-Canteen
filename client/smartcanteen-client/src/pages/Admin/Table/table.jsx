@@ -12,8 +12,7 @@ import ConfigData from "../../../config/config";
 import { Button } from "@mui/material";
 import EditTable from "./edit-table";
 import ViewTable from "./view-table";
-// import EditCategory from "./edit-category";
-// import ViewCategory from "./view-category";
+ import ViewQR from "./view-qr";
  
 const defaultTableDetails = {
   _id: 0,
@@ -29,8 +28,10 @@ const Table = () => {
   const [randomId, setRandomId] = useState(Date.now().toString());
   const [changeDataId,setChangeDataId]=useState(0)
   const [openView,setOpenView]=useState(false)
+  const [url,setURL]=useState("")
+  const [openQR,setOpenQR]=useState(false)
   const AdminURL = ConfigData.ServerAddress + "/admin";
-
+  
   useEffect(() => {
     axios.defaults.withCredentials = true;
     axios.get(AdminURL+"/table-list",{withCredentials: true}).then((response) => {
@@ -62,7 +63,18 @@ if(user.role=="admin"){
     setviewDetails(viewDet);
     setOpenView(true);
   };
-  
+  const generateQRCode=(number)=>{
+    
+    const qrcodeURL=AdminURL+"/qrcode"
+    axios
+    .post(qrcodeURL, {
+      url: ConfigData.originAddress,
+      number:number,
+    }).then((response)=>{
+      setURL(response.data)
+      setOpenQR(true)
+    })
+  }
   const handleDelete = (id) => {
     axios.defaults.withCredentials = true;
     const delelteUrl = AdminURL + "/delete-category";
@@ -146,6 +158,19 @@ if(user.role=="admin"){
               color: "black",
             }}
             variant="contained"
+            onClick={() => generateQRCode(e.number)}
+          >
+            QR Code
+          </Button>
+          <Button
+            style={{
+              borderRadius: 5,
+              backgroundColor: "white",
+              padding: "3px 8px",
+              fontSize: "14px",
+              color: "black",
+            }}
+            variant="contained"
             onClick={() => handleDelete(e._id)}
           >
             Delete
@@ -186,6 +211,11 @@ if(user.role=="admin"){
           openView={openView}
           setOpenView={setOpenView}
           resetEdit={ResetEditDetails}
+          />   
+            <ViewQR
+          url={url}
+          openQR={openQR}
+          setOpenQR={setOpenQR}
           />    
       </div>:<div>
 

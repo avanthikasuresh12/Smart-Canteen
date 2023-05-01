@@ -27,6 +27,7 @@ const EditMenuItem = (props) => {
   const [regCallID, setRegCallID] = useState("");
   const [error, setError] = useState("");
   const [registerationDetails, setRegisterationDetails] = useState("");
+  const [image,setImage]=useState(null)
   const [isSubmit, setisSubmit] = useState("");
   axios.defaults.withCredentials = true;
   useEffect(() => {
@@ -66,6 +67,9 @@ const EditMenuItem = (props) => {
     setPrice(menuDetails.price)
     setCategory(menuDetails.category)
   }, [menuDetails, randomId]);
+  const handleImageChange = (e) => {
+    setImage(e.target.files[0]);
+  };
   const HandleClose = () => {
     setOpenEdit(false);
     setError("");
@@ -74,7 +78,7 @@ const EditMenuItem = (props) => {
   const CategoryOptions=[
     ""
   ]
-  const menuAddUR = ConfigData.ServerAddress + "/admin/addoredit-menuitem";
+  const menuAddURL = ConfigData.ServerAddress + "/admin/addoredit-menuitem";
 
   const onSubmit = (e) => {
  
@@ -87,6 +91,7 @@ const EditMenuItem = (props) => {
       offer:offer,
       available:available,
       category:category,
+      imagePath:""
     };
   
     setRegisterationDetails(registerDetails);
@@ -99,15 +104,39 @@ const EditMenuItem = (props) => {
     axios.defaults.withCredentials = true;
     
     await axios
-      .post(menuAddUR, {
+      .post(menuAddURL, {
      data:registerData
-      }) 
-      .then((res) => {
+      },
+      ) 
+      .then(async (res) => {
         if (res.status == 200) {
+          console.log(res.data);
+          const uploadURL = ConfigData.ServerAddress + "/admin/upload";
+          const formData = new FormData();
+    
+          if(image!=null){
+            formData.append('image', image);
+            formData.append("collectionID",2)
+            if(id!=0){
+              formData.append("itemID",id)
+            }else{
+              formData.append("itemID",res.data)
+            }
+            const imageData =   axios.post(uploadURL, formData,{
+              headers: {
+                'Content-Type': 'multipart/form-data'
+              }
+            });
+          }
+         
+        
+          setImage(null)
           resetEdit();
           HandleClose();
         }
       });
+
+      
   };
   
   const hotelStatusOption = [
@@ -247,15 +276,22 @@ const EditMenuItem = (props) => {
                      setAvailable(e.value)
                     }}
                   />
-                  <p>{error.category}</p>
+                  <p>{error.active}</p>
                 </div>
                
                
               </Grid>
+  
+    
+ 
               </Grid> 
+              <Grid item s={2} className="mb-5">
+                <h6>Choose Image</h6>
+              <input type="file" onChange={handleImageChange} />
+              </Grid>
            
             <div>
-              <Button type="submit">Submit</Button>
+              <Button type="submit"  enctype="multipart/form-data" >Submit</Button>
             </div>
           </form>
 

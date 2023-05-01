@@ -1,14 +1,16 @@
 const { response } = require("express");
 const express = require("express");
+const multer=require("multer")
 const router = express.Router();
 const adminHelpers = require("../helpers/adminHelpers");
+var randomstring = require("randomstring");
 router.post("/login", async function (req, res) {
   const data = req.body;
   console.log(data);
   adminHelpers
     .login(data)
   
-    .then((response) => {
+    .then((response) => { 
       console.log(response);
       res.send(response);
     })
@@ -28,6 +30,9 @@ router.post("/edit-profile", (req, res) => {
   });
 });
 
+
+
+   
 //add or edit   categories of menu to the hotel
 
 router.post("/addoredit-category", (req, res) => {
@@ -78,16 +83,17 @@ router.get("/category-list", (req, res) => {
   });
 });
 
+
 // add or edit   menu items to the hotel;
-router.post("/addoredit-menuitem", (req, res) => {
+router.post("/addoredit-menuitem",  (req, res) => {
   let id ;
   if(req.session.user){
     id=req.session.user._id;
   }
   const data = req.body.data;
-  console.log(data);
   if (data.id == 0) {
     adminHelpers.addMenuItem(data, id).then((response) => {
+    
       res.send(response);
     });
   } else {
@@ -185,5 +191,46 @@ router.post("/restaurant",(req,res)=>{
   })
 })
  
+router.post("/qrcode",(req,res)=>{
+  let url=req.body.url;
+  const tableNO=req.body.number;
+  let restaurantId;
+  if(req.session.user){
+    restaurantId=req.session.user._id;
+  }
+  url=url+ `/menu-list/:${restaurantId}/:${tableNO}`;
+  console.log(url);
+  adminHelpers.generateQR(url).then((response)=>{
+    res.send(response)
+  })
+})
 
+  
+
+  // upload files 
+  const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+      console.log(file);
+      if(!file){
+        console.log(" No file");
+        return
+      }
+      cb(null, 'uploads');
+    },
+    filename: function (req, file, cb) {
+      if(!file){
+        console.log(" No file");
+        return
+      }
+      cb(null,`${randomstring.generate(6)}.png`);
+    },
+  });
+  const uploads = multer({ storage });
+router.post('/upload', uploads.single("image"),(req, res,) => {
+  const collectionID=req.body.collectionID;
+  const itemId=req.body.itemID;
+  const path=`D:\\My_Projects\\Smart_Canteen\\client\\smartcanteen-client\\src\\uploads\\${req.file.filename}`
+//  console.log(collectionID,itemId,path);
+ adminHelpers.updateImageURL(collectionID,itemId,path,req.file)
+});
 module.exports = router;

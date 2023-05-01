@@ -16,7 +16,7 @@ module.exports = {
       dataToSave.role = "admin";
       delete dataToSave.id;
       db.get()
-        .collection(collection.USERS)
+        .collection(collection.ADMIN) 
         .insertOne(dataToSave)
         .then((response) => {
           resolve(response);
@@ -30,17 +30,17 @@ module.exports = {
     return new Promise(async (resolve, reject) => {
       let RestaurantData = db
         .get()
-        .collection(collection.USERS)
-        .find({role:"admin"})
+        .collection(collection.ADMIN)
+        .find({role:"admin"}) 
         .toArray();
       resolve(RestaurantData);
     });
-  },
+  }, 
   //Updating excisting restaurant details
   UpdateRestaurant: (prodDetails) => {
     return new Promise(async (resove, reject) => {
       db.get()
-        .collection(collection.USERS)
+        .collection(collection.ADMIN)
         .updateOne(
           { _id: ObjectId(prodDetails.id) },
           {
@@ -72,7 +72,7 @@ module.exports = {
   DeleteUser: (id) => {
     return new Promise((resolve, reject) => {
       db.get()
-        .collection(collection.USERS)
+        .collection(collection.ADMIN)
         .deleteOne({ _id: ObjectId(id) })
         .then((response) => {
           resolve({ message: "user deleted" });
@@ -85,7 +85,7 @@ module.exports = {
   changeStatus: (id, status) => {
     return new Promise((resolve, reject) => {
       db.get()
-        .collection(collection.USERS)
+        .collection(collection.ADMIN)
         .updateOne(
           { _id: ObjectId(id) },
           {

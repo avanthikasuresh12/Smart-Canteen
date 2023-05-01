@@ -8,6 +8,8 @@ const superAdminRoute=require("./routes/superAdmin")
 const session = require('express-session')
  const mongoStore=require("connect-mongo")(session)
  var cookieParser = require('cookie-parser');
+ const fileUpload = require('express-fileupload');
+ const multipart =require("connect-multiparty")
 var app=express();
 
 //database setup
@@ -55,9 +57,15 @@ app.use(session({
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({extended: true}))
  
- 
-
-
+ //file upload middleware
+app.use(
+  fileUpload({
+    limits: { fileSize: 50 * 1024 * 1024 }, // 50 MB file size limit
+  })
+);
+   
+var multipartMiddleware = multipart({ maxFieldsSize: (20 * 1024 * 1024) });
+app.use(multipartMiddleware);
 
   // server setup
 app.listen(3002,()=>{

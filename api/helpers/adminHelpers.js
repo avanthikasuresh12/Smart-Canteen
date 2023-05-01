@@ -2,14 +2,14 @@ const db = require("../config/connection");
 const collection = require("../config/collection");
 const bcrypt = require("bcrypt");
 const { ObjectId } = require("mongodb");
-const { reject } = require("bcrypt/promises");
+ const QRCode=require("qrcode");
 const { response } = require("express");
 module.exports = {
   login: (userData) => {
     return new Promise(async (resolve, reject) => {
       const admin = await db
         .get()
-        .collection(collection.USERS)
+        .collection(collection.ADMIN)
         .findOne({ email: userData.email });
       if (!admin) {
         reject({ message: "No user found" });
@@ -24,13 +24,13 @@ module.exports = {
     });
   },
 
-  editProfile: ( updateDetails) => {
+  editProfile: (updateDetails) => {
     return new Promise(async (resolve, reject) => {
       var bcryptedPassword = await bcrypt.hash(updateDetails.password, 10);
       updateDetails.password = bcryptedPassword;
       await db
         .get()
-        .collection(collection.USERS)
+        .collection(collection.ADMIN)
         .updateOne(
           { _id: ObjectId(updateDetails.id) },
           {
@@ -40,10 +40,10 @@ module.exports = {
               category: updateDetails.category,
               phone: updateDetails.phone,
               email: updateDetails.email,
-              city:updateDetails.city,
-              state:updateDetails.state,
-              district:updateDetails.district,
-              password:updateDetails.password,
+              city: updateDetails.city,
+              state: updateDetails.state,
+              district: updateDetails.district,
+              password: updateDetails.password,
             },
           }
         )
@@ -86,14 +86,14 @@ module.exports = {
   addMenuItem: (menuItemData, id) => {
     return new Promise(async (resolve, reject) => {
       menuItemData.restaurnat_id = id;
-      await db
+    await db
         .get()
         .collection(collection.MENU_ITEM)
-        .insertOne(menuItemData)
-        .then((response) => {
-          resolve(response);
-        });
-    });
+        .insertOne(menuItemData).then((item)=>{
+          resolve(item.insertedId.toString())
+        })
+         
+    }); 
   },
   editMenuItem: (menuData) => {
     return new Promise((resolve, reject) => {
@@ -107,13 +107,14 @@ module.exports = {
               category: menuData.category,
               available: menuData.available,
               price: menuData.price,
-              description: menuData.description, 
-              offer:menuData.offer,
+              description: menuData.description,
+              offer: menuData.offer,
             },
           }
         )
-        .then(() => {
-          resolve({ message: "Menu item updated!!" });
+        .then((res) => {
+          console.log(res);
+          resolve(res);
         });
     });
   },
@@ -122,11 +123,10 @@ module.exports = {
       const MenuItems = await db
         .get()
         .collection(collection.MENU_ITEM)
-        .find({ restaurnat_id:  restaurantId })
-        .toArray()
-       
-          resolve(MenuItems);
-      
+        .find({ restaurnat_id: restaurantId })
+        .toArray();
+
+      resolve(MenuItems);
     });
   },
 
@@ -135,7 +135,7 @@ module.exports = {
       console.log("Some");
       db.get()
         .collection(collection.MENU_ITEM)
-        .deleteOne({ _id: ObjectId( id) })
+        .deleteOne({ _id: ObjectId(id) })
         .then(() => {
           resolve({ message: "Item Deleted!!" });
         });
@@ -149,10 +149,9 @@ module.exports = {
         .collection(collection.MENU_ITEM)
         .findOne({
           _id: ObjectId(id),
-        })
-       
-          resolve(item);
-     
+        });
+
+      resolve(item);
     });
   },
 
@@ -163,9 +162,9 @@ module.exports = {
         .get()
         .collection(collection.CATEGORY)
         .findOne({
-          _id: ObjectId(id)
-        }) 
-        resolve(item)
+          _id: ObjectId(id),
+        });
+      resolve(item);
     });
   },
 
@@ -175,10 +174,9 @@ module.exports = {
         .get()
         .collection(collection.CATEGORY)
         .find({ restaurnat_id: restaurnatId })
-        .toArray()
-         
-          resolve(categories);
-       
+        .toArray();
+
+      resolve(categories);
     });
   },
   deleteCategory: (id) => {
@@ -191,7 +189,7 @@ module.exports = {
         });
     });
   },
-  deleteTable:(id)=>{
+  deleteTable: (id) => {
     return new Promise((resolve, reject) => {
       db.get()
         .collection(collection.TABLE)
@@ -202,7 +200,7 @@ module.exports = {
     });
   },
 
-  getTable:(id)=>{
+  getTable: (id) => {
     return new Promise(async (resolve, reject) => {
       const item = await db
         .get()
@@ -215,20 +213,19 @@ module.exports = {
     });
   },
 
-  getAllTables:(restaurnatId)=>{
+  getAllTables: (restaurnatId) => {
     return new Promise(async (resolve, reject) => {
       const tables = await db
         .get()
         .collection(collection.TABLE)
         .find({ restaurnat_id: restaurnatId })
-        .toArray()
-         
-          resolve(tables);
-       
-    }); 
+        .toArray();
+
+      resolve(tables);
+    });
   },
 
-  createTable:(data,restaurantId)=>{
+  createTable: (data, restaurantId) => {
     return new Promise(async (resolve, reject) => {
       console.log("resraurant");
       console.log(restaurantId);
@@ -243,7 +240,7 @@ module.exports = {
     });
   },
 
-  UpdateTable:(data)=>{
+  UpdateTable: (data) => {
     return new Promise((resolve, reject) => {
       db.get()
         .collection(collection.TABLE)
@@ -251,8 +248,8 @@ module.exports = {
           { _id: ObjectId(data.id) },
           {
             $set: {
-              number:data.number,
-              capacity:data.capacity,
+              number: data.number,
+              capacity: data.capacity,
             },
           }
         )
@@ -261,12 +258,49 @@ module.exports = {
         });
     });
   },
-  getRestaurant:(id)=>{
+  getRestaurant: (id) => {
+    return new Promise((resolve, reject) => {
+      db.get()
+        .collection(collection.ADMIN)
+        .findOne({ _id: ObjectId(id) })
+        .then((response) => {
+          resolve(response);
+        });
+    });
+  },
+
+  generateQR: (url) => {
+    
     return new Promise((resolve,reject)=>{
-      db.get().collection(collection.USERS).findOne({_id:ObjectId( id)}).then((response)=>{
-resolve(response)
+      QRCode.toDataURL(url, function (err, generatedURL) {
+        console.log(generatedURL);
+        resolve(generatedURL)
+      }) 
+    })
+  },
+
+  updateImageURL:(collectionID,itemID,path,image)=>{
+    return new Promise(async(resolve,reject)=>{
+      let collectionName;
+      if(collectionID==1){
+      collectionName=collection.ADMIN;
+      }else if(collectionID==2){
+        collectionName=collection.MENU_ITEM;
+      }
+      db.get()
+      .collection(collection.MENU_ITEM)
+      .updateOne(
+        { _id: ObjectId(itemID) },
+        {
+          $set: {
+            imagePath:image
+          },
+        }
+      ).then((res)=>{
+        console.log(res);
+        resolve({message:"image added"})
       })
     })
-   
+ 
   }
 };
