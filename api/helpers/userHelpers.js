@@ -1,7 +1,6 @@
 const db = require("../config/connection");
 const collection = require("../config/collection");
 const bcrypt = require("bcrypt");
-const { resource, response } = require("../../../MyCostumes/app");
 const { ObjectId } = require("mongodb");
 module.exports = {
   Login: (data) => {
@@ -128,8 +127,6 @@ module.exports = {
         .findOne({ email: data.email });
 
       if (user) {
-        console.log(data.password);
-        console.log(user.password);
         bcrypt.compare(data.password, user.password).then((res, err) => {
           if (res) {
             resolve(user);
@@ -143,44 +140,43 @@ module.exports = {
     });
   },
 
-
   getCartProducts: (userId) =>
-  new Promise(async (resolve, reject) => {
-    const cartItems = await db
-      .get()
-      .collection(collection.CART)
-      .aggregate([
-        {
-          $match: {
-            user: ObjectId(userId),
+    new Promise(async (resolve, reject) => {
+      const cartItems = await db
+        .get()
+        .collection(collection.CART)
+        .aggregate([
+          {
+            $match: {
+              user: ObjectId(userId),
+            },
           },
-        },
-        {
-          $unwind: "$products",
-        },
-        {
-          $project: {
-            item: "$products.item",
-            quantity: "$products.quantity",
+          {
+            $unwind: "$products",
           },
-        },
-        {
-          $lookup: {
-            from: collection.MENU_ITEM,
-            localField: "item",
-            foreignField: "_id",
-            as: "products",
+          {
+            $project: {
+              item: "$products.item",
+              quantity: "$products.quantity",
+            },
           },
-        },
-        {
-          $project: {
-            item: 1,
-            quantity: 1,
-            products: { $arrayElemAt: ["$products", 0] },
+          {
+            $lookup: {
+              from: collection.MENU_ITEM,
+              localField: "item",
+              foreignField: "_id",
+              as: "products",
+            },
           },
-        },
-      ])
-      .toArray();
-    resolve(cartItems);
-  }),
+          {
+            $project: {
+              item: 1,
+              quantity: 1,
+              products: { $arrayElemAt: ["$products", 0] },
+            },
+          },
+        ])
+        .toArray();
+      resolve(cartItems);
+    }),
 };

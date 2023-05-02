@@ -24,6 +24,7 @@ const EditMenuItem = (props) => {
   const [offer, setOffer] = useState(menuDetails.offer);
    const [available, setAvailable] = useState(menuDetails.available);
    const [category,setCategory]=useState(menuDetails.category)
+   const [categories,setCategories]=useState([])
   const [regCallID, setRegCallID] = useState("");
   const [error, setError] = useState("");
   const [registerationDetails, setRegisterationDetails] = useState("");
@@ -58,7 +59,7 @@ const EditMenuItem = (props) => {
       ),
     },
   ];
-  useEffect(() => {
+  useEffect(  () => {
     setName(menuDetails.name);
     setDescription(menuDetails.description);
     setId(menuDetails._id)
@@ -66,6 +67,21 @@ const EditMenuItem = (props) => {
     setOffer(menuDetails.offer)
     setPrice(menuDetails.price)
     setCategory(menuDetails.category)
+    axios.defaults.withCredentials = true;
+    const categoryGetList=ConfigData.ServerAddress+"/admin/category-list"
+      axios.get(categoryGetList).then((response)=>{
+       
+ const options=response.data.map((e)=>{
+  return{
+    label:e.name,
+    value:e._id,
+  }
+ })
+ console.log(options);
+ setCategories(options)
+    })
+   
+
   }, [menuDetails, randomId]);
   const handleImageChange = (e) => {
     setImage(e.target.files[0]);
@@ -75,9 +91,7 @@ const EditMenuItem = (props) => {
     setError("");
     resetEdit();
   };
-  const CategoryOptions=[
-    ""
-  ]
+ 
   const menuAddURL = ConfigData.ServerAddress + "/admin/addoredit-menuitem";
 
   const onSubmit = (e) => {
@@ -91,7 +105,7 @@ const EditMenuItem = (props) => {
       offer:offer,
       available:available,
       category:category,
-      imagePath:""
+      imagePath:"",
     };
   
     setRegisterationDetails(registerDetails);
@@ -99,6 +113,11 @@ const EditMenuItem = (props) => {
     setisSubmit(true);
     setCheckError();
   };
+
+  const handleCategoryChange=(id)=>{
+    console.log(id);
+setCategory(id)
+  }
  
   const registerUser = async (registerData) => {
     axios.defaults.withCredentials = true;
@@ -219,13 +238,12 @@ const EditMenuItem = (props) => {
                   <ReactSelect
                     maxMenuHeight={"200px"}
                     defaultValue={     menuDetails._id==0 ? {label:"category",value:""}:{
-                 
-                      label: "restaurantDetails.category",
-                      value: "restaurantDetails.category",
+                  label:category,
+                  value:category
                     }}
-                    options={CategoryOptions}
+                    options={categories}
                     onChange={(e) => {
-                   //   HandleCateogoryChange(e);
+                handleCategoryChange(e.value);
                     }}
                   />
                   <p>{error.category}</p>

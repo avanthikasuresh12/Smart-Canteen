@@ -14,6 +14,8 @@ import UserLogin from "./pages/user/userLogin";
 import NavBar from "./pages/navbar";
 import UserRegister from "./pages/user/register";
 import Cart from "./pages/user/cart";
+import Orders from "./pages/user/orders";
+import Invoice from "./pages/user/invoice";
 
 const router = createBrowserRouter([
  
@@ -106,7 +108,20 @@ const router = createBrowserRouter([
         </Container>
       )
     },
-  
+    {
+      path:"orders",
+      element:(
+        <Container>
+<Orders/>
+        </Container>
+      )
+    },
+    {
+      path:"invoice",
+      element:<Container>
+        <Invoice/>
+      </Container>
+    }
     
 
   
