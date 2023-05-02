@@ -279,7 +279,7 @@ module.exports = {
     })
   },
 
-  updateImageURL:(collectionID,itemID,path,image)=>{
+  updateImageURL:(collectionID,itemID,path)=>{
     return new Promise(async(resolve,reject)=>{
       let collectionName;
       if(collectionID==1){
@@ -293,7 +293,7 @@ module.exports = {
         { _id: ObjectId(itemID) },
         {
           $set: {
-            imagePath:image
+            imagePath:path
           },
         }
       ).then((res)=>{

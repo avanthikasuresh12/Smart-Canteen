@@ -64,7 +64,7 @@ if(user){
     return(
 <div  className="menu-div">
         <article key="" className="menu-item">
-        <img src="" alt="" className="photo" />
+        <img src={ require(`../../uploads/${e.imagePath}`)} alt="" className="photo" />
         <div className="item-info">
           <header>
             <h4>{e.name}</h4>

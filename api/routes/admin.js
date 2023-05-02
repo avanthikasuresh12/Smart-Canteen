@@ -4,6 +4,7 @@ const multer=require("multer")
 const router = express.Router();
 const adminHelpers = require("../helpers/adminHelpers");
 var randomstring = require("randomstring");
+var path = require('path');
 router.post("/login", async function (req, res) {
   const data = req.body;
   console.log(data);
@@ -215,7 +216,7 @@ router.post("/qrcode",(req,res)=>{
         console.log(" No file");
         return
       }
-      cb(null, 'uploads');
+      cb(null, path.join( __dirname,'../../client/smartcanteen-client/src/uploads'));
     },
     filename: function (req, file, cb) {
       if(!file){
@@ -229,8 +230,7 @@ router.post("/qrcode",(req,res)=>{
 router.post('/upload', uploads.single("image"),(req, res,) => {
   const collectionID=req.body.collectionID;
   const itemId=req.body.itemID;
-  const path=`D:\\My_Projects\\Smart_Canteen\\client\\smartcanteen-client\\src\\uploads\\${req.file.filename}`
-//  console.log(collectionID,itemId,path);
- adminHelpers.updateImageURL(collectionID,itemId,path,req.file)
+  const name=req.file.filename;
+ adminHelpers.updateImageURL(collectionID,itemId,name)
 });
 module.exports = router;

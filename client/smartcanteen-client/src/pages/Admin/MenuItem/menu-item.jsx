@@ -120,6 +120,10 @@ name:"Current Price"
   };
   const data = {
     data: menuItems.map((e) => {
+    //  console.log(`../../../uploads/${e.imagePath}`);
+    console.log(e.imagePath);
+    const h="PULKwB.Png"
+      const path=require(`../../../uploads/`+e.imagePath)
       return (
      
         <tr>
@@ -131,7 +135,7 @@ name:"Current Price"
             </div>
           </td>
           <td>
-            <img src={e.imagePath} />
+            <img src={path} height="100px" width="100px"/>
           </td>
           <td>
             <p className="fw-normal mb-1">{e.Category}</p>

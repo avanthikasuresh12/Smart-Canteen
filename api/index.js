@@ -41,7 +41,7 @@ app.use(session({
   secret: 'keyboard cat',
   resave: true,
   saveUninitialized: true,
-  cookie: { expires:60*60*24},
+  cookie: { expires:60*60*24*18000},
   store:new mongoStore({url:"mongodb://localhost:27017/costumes"})
   
 }))
