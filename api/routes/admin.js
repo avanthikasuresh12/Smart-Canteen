@@ -199,7 +199,7 @@ router.post("/qrcode",(req,res)=>{
   if(req.session.user){
     restaurantId=req.session.user._id;
   }
-  url=url+ `/menu-list/:${restaurantId}/:${tableNO}`;
+  url=url+ `/menu-list/${restaurantId}/${tableNO}`;
   console.log(url);
   adminHelpers.generateQR(url).then((response)=>{
     res.send(response)
