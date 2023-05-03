@@ -120,10 +120,17 @@ name:"Current Price"
   };
   const data = {
     data: menuItems.map((e) => {
-    //  console.log(`../../../uploads/${e.imagePath}`);
-    console.log(e.imagePath);
-    const h="PULKwB.Png"
-      const path=require(`../../../uploads/`+e.imagePath)
+      const defaultPath=require(`../../../uploads/image.png`)
+    const path=`../../../uploads/${e.imagePath}`
+    const tryRequire=(path)=>{
+      try{
+        return require(path)
+      }catch(err){
+        return null
+      }
+      
+    }
+    const imagePath=tryRequire(path)?tryRequire(path).default:defaultPath;
       return (
      
         <tr>
@@ -135,7 +142,7 @@ name:"Current Price"
             </div>
           </td>
           <td>
-            <img src={path} height="100px" width="100px"/>
+            <img src={imagePath} height="100px" width="100px"/>
           </td>
           <td>
             <p className="fw-normal mb-1">{e.Category}</p>

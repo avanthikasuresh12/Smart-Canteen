@@ -61,10 +61,21 @@ if(user){
 }
   return (
    items.map((e)=>{
+    const defaultPath=require(`../../uploads/image.png`)
+    const path=`../../uploads/${e.imagePath}`
+    const tryRequire=(path)=>{
+      try{
+        return require(path)
+      }catch(err){
+        return null
+      }
+      
+    }
+    const imagePath=tryRequire(path)?tryRequire(path).default:defaultPath;
     return(
 <div  className="menu-div">
         <article key="" className="menu-item">
-        <img src={ require(`../../uploads/${e.imagePath}`)} alt="" className="photo" />
+        <img src={imagePath} alt="" className="photo" />
         <div className="item-info">
           <header>
             <h4>{e.name}</h4>
