@@ -17,7 +17,7 @@ router.post("/login", async (req, res) => {
 const data=req.body.data;
 const restaurantId=data.id;
 const tableNumber=data.tableno;
-console.log(data);
+ 
     await userHelpers.getAllMenuItem(restaurantId).then((menuItem)=>{
       res.send(menuItem)
     })
@@ -62,6 +62,12 @@ console.log(data);
     })
   })
  
+//
+router.post("/confirm-order",(req,res)=>{
+  const data=req.body.data;
+  console.log(data);
+  userHelpers.createOrder(data);
+})
 
 
 

@@ -21,6 +21,7 @@ router.post("/login", async function (req, res) {
     });
 });
 
+
 // edit the hotels profile
 router.post("/edit-profile", (req, res) => {
   const updateDetails = req.body.body;
@@ -176,8 +177,7 @@ router.get("/delete-table", (req, res) => {
 
 //get single restaurant
 router.post("/restaurant", (req, res) => {
-  const id = req.body.id;
-
+  const id = req.body. id;
   adminHelpers.getRestaurant(id).then((response) => {
     res.send(response);
   });
@@ -218,6 +218,7 @@ const storage = multer.diskStorage({
     cb(null, `${randomstring.generate(6)}.png`);
   },
 });
+
 const uploads = multer({ storage });
 router.post("/upload", uploads.single("image"), (req, res) => {
   const collectionID = req.body.collectionID;
@@ -225,4 +226,6 @@ router.post("/upload", uploads.single("image"), (req, res) => {
   const name = req.file.filename;
   adminHelpers.updateImageURL(collectionID, itemId, name);
 });
+
+
 module.exports = router;

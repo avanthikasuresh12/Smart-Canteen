@@ -6,6 +6,7 @@ module.exports={
     MENU_ITEM:"menu_item",
     TABLE:"table",
     ADMIN:"admin",
-    CART:"cart"
+    CART:"cart",
+    ORDER:"order",
     
 }

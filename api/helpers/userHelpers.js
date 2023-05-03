@@ -179,4 +179,21 @@ module.exports = {
         .toArray();
       resolve(cartItems);
     }),
+
+    createOrder:(data)=>{
+      return new Promise(async (resolve,reject)=>{
+        const date=new Date();
+
+        const order={
+          restaurant :data.restaurant,
+          totalPrice:data.totalPrice,
+        products:data.products,
+        time:date.toTimeString(),
+        date:date.toDateString()
+      }
+      await db.get().collection(collection.ORDER).insertOne(order)
+      })
+      
+  }
+  
 };

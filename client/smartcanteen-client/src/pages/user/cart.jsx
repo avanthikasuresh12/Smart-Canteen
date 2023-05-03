@@ -17,6 +17,7 @@ import axios from "axios";
 
 export default function Cart() {
   const [products, setProducts] = useState([]);
+  const [totalPrice,setTotalPrice]=useState(0)
   useEffect(() => {
     axios.defaults.withCredentials = true;
     const cartURL = ConfigData.ServerAddress + "/get-cart";
@@ -28,10 +29,37 @@ export default function Cart() {
         withCredentials: true,
       })
       .then((res) => {
-        console.log(res.data);
+      let price=0;
+      res.data.map((pro)=>{
+        price=price+parseFloat(pro.products.price)*pro.quantity
+      })
         setProducts(res.data);
+        setTotalPrice(price)
       });
   }, []);
+
+  
+  const handleConfirm=()=>{
+const ConfrimOrderURL=ConfigData.ServerAddress+"/confirm-order";
+let restaurant=localStorage.getItem("restaurant")
+restaurant=JSON.parse(restaurant)
+console.log(restaurant);
+const ordersData={
+  products:products,
+  totalPrice:totalPrice,
+  restaurant:restaurant
+}
+axios.defaults.withCredentials = true;
+axios
+  .post(ConfrimOrderURL, {
+    data:ordersData,
+        headers: {
+          "Content-Type": "application/json",
+        },
+    withCredentials: true,
+  })
+  }
+
   return (
     <section className="h-100 h-custom" style={{ backgroundColor: "#FFFFFF" }}>
       <MDBContainer className="py-5 h-100">
@@ -57,8 +85,17 @@ export default function Cart() {
                         </MDBTypography>
                       </div>
                       {products.map((e) => {
-                        const path = require("../../uploads/" +
-                          e.products.imagePath);
+                         let defaultPath= require(`../../uploads/image.png`)
+                         let path=`../../uploads/${e.imagePath}`
+                         const tryRequire=(path)=>{
+                           try{
+                             return require(path)
+                           }catch(err){
+                             return null
+                           }
+                           
+                         }
+                         const imagePath=tryRequire(path)?tryRequire(path):defaultPath;
                         return (
                           <>
                             {" "}
@@ -66,7 +103,7 @@ export default function Cart() {
                             <MDBRow className="mb-4 d-flex justify-content-between align-items-center">
                               <MDBCol md="2" lg="2" xl="2">
                                 <MDBCardImage
-                                  src={path}
+                                  src={imagePath}
                                   fluid
                                   className="rounded-3"
                                   alt="Cotton T-shirt"
@@ -92,14 +129,9 @@ export default function Cart() {
                                 <MDBBtn color="link" className="px-2">
                                   <MDBIcon fas icon="minus" />
                                 </MDBBtn>
-
-                                <MDBInput
-                                  type="number"
-                                  min="0"
-                                  defaultValue={e.products.quantity}
-                                  size="sm"
-                                />
-
+                                <MDBIcon fas icon="minus" />
+<p>{e.quantity}</p>
+<MDBIcon fas icon="plus" />
                                 <MDBBtn color="link" className="px-2">
                                   <MDBIcon fas icon="plus" />
                                 </MDBBtn>
@@ -107,8 +139,7 @@ export default function Cart() {
                               <MDBCol md="3" lg="2" xl="2" className="text-end">
                                 <MDBTypography tag="h6" className="mb-0">
                                   {Math.trunc(
-                                    e.products.price -
-                                      (e.products.offer / 100) *
+
                                         e.products.price
                                   ) * e.quantity}{" "}
                                   ₹
@@ -152,7 +183,7 @@ export default function Cart() {
                         <MDBTypography tag="h5" className="text-uppercase">
                           Total price
                         </MDBTypography>
-                        <MDBTypography tag="h5">€ 137.00</MDBTypography>
+                        <MDBTypography tag="h5">{totalPrice} ₹</MDBTypography>
                       </div>
 
                       <MDBBtn
@@ -162,8 +193,9 @@ export default function Cart() {
                           backgroundColor: "#ccaa6a",
                           borderColor: "#ccaa6a",
                         }}
+                        onClick={handleConfirm}
                       >
-                        Checkout
+                      Confirm
                       </MDBBtn>
                     </div>
                   </MDBCol>

@@ -8,11 +8,12 @@ import { Button } from 'react-bootstrap';
 const ViewQR=( )=>{
  const params=useParams();
  const [items,setItems]=useState([])
- localStorage.setItem("restaurant",params.id)
  localStorage.setItem("table",params.tableno)
  useEffect(()=>{
   axios.defaults.withCredentials = true;
+  localStorage.removeItem("user")
     const MenulistURL=ConfigData.ServerAddress+"/menu-list";
+    const restaurantURL=ConfigData.ServerAddress+"/admin/restaurant"
     axios
       .post(MenulistURL, {
    data:params,
@@ -23,6 +24,16 @@ const ViewQR=( )=>{
       }).then((res)=>{
         setItems(res.data)
       })
+      axios.post(restaurantURL,{
+        id:params.id,
+        headers: {
+          "Content-Type": "application/json",
+        },
+        withCredentials: true,
+      }).then((res)=>{
+        console.log(res);
+        localStorage.setItem("restaurant",JSON.stringify(res.data))
+      }) 
 
  },[])
 
@@ -51,7 +62,7 @@ const handleCartAdd=(proID)=>{
  console.log(proID);
 let user=localStorage.getItem("user")
 user=JSON.parse(user)
-alert(user._id)
+alert(user)
 if(user){
   const userId=user._id;
   addtoCart(proID,userId)
@@ -61,8 +72,9 @@ if(user){
 }
   return (
    items.map((e)=>{
-    const defaultPath=require(`../../uploads/image.png`)
-    const path=`../../uploads/${e.imagePath}`
+    let defaultPath= require(`../../uploads/image.png`)
+    let path=`../../uploads/${e.imagePath}`
+    path =path.toString();
     const tryRequire=(path)=>{
       try{
         return require(path)
@@ -71,7 +83,7 @@ if(user){
       }
       
     }
-    const imagePath=tryRequire(path)?tryRequire(path).default:defaultPath;
+    const imagePath=tryRequire(path)?tryRequire(path):defaultPath;
     return(
 <div  className="menu-div">
         <article key="" className="menu-item">
