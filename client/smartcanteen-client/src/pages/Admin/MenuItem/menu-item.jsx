@@ -120,7 +120,7 @@ name:"Current Price"
   };
   const data = {
     data: menuItems.map((e) => {
-      const defaultPath=require(`../../../uploads/image.png`)
+      // const defaultPath=require(`../../../uploads/image.png`)
     const path=`../../../uploads/${e.imagePath}`
     const tryRequire=(path)=>{
       try{
@@ -130,7 +130,7 @@ name:"Current Price"
       }
       
     }
-    const imagePath=tryRequire(path)?tryRequire(path).default:defaultPath;
+    const imagePath=tryRequire(path)?tryRequire(path).default:"defaultPath";
       return (
      
         <tr>

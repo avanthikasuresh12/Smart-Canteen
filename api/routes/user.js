@@ -45,19 +45,20 @@ const tableNumber=data.tableno;
   router.post("/addto-cart",async (req,res)=>{
   const proId=req.body.cartData.proId;
   const userId=req.body.cartData.userId;
-    userHelpers.addtoCart(userId,proId).then((response)=>{
-      console.log(response);
+  const restaurantId=req.body.cartData.restaurantId;
+    userHelpers.addtoCart(userId,proId,restaurantId).then((response)=>{
       res.send(response)
     })
   }) 
 
-  router.get("/get-cart",async (req,res)=>{
+  router.post("/get-cart",async (req,res)=>{
     let userId;
     if(req.session.user){
       userId=req.session.user._id;
     }
-   
-    await userHelpers.getCartProducts(userId).then((products)=>{
+   const restaurantId=req.body.restaurantId;
+ 
+    await userHelpers.getCartProducts(userId,restaurantId).then((products)=>{
       res.send(products)
     })
   })

@@ -31,7 +31,8 @@ export default function UserLogin() {
   }, [errorId]);
   const LoginURL = ConfigData.ServerAddress + "/user_login";
   const LoginUser = () => {
-    const restaurant_id= localStorage.getItem("restaurant")
+    let restaurant=JSON.parse(localStorage.getItem("restaurant"))
+    const restaurant_id= restaurant._id;
     const tableNo=   localStorage.getItem("table")
     axios
       .post(LoginURL, {
@@ -42,9 +43,10 @@ export default function UserLogin() {
         withCredentials: true,
       })
       .then((res) => {
-        if (res.status == 200) {
+        if (res.status == 200) { 
           setFinalError("");
           localStorage.setItem("user", JSON.stringify(res.data));
+        alert(localStorage.getItem("user"))
           window.location.href=ConfigData.originAddress+`/menu-list/${restaurant_id}/${tableNo}`;
         }
       })

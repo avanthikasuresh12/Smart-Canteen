@@ -11,7 +11,7 @@ try
         if (err) return done(err);
         state.db = data.db(dbname);
         done();
-      });
+      }); 
 }catch(err){
     throw err
 }

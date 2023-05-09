@@ -11,7 +11,6 @@ const ViewQR=( )=>{
  localStorage.setItem("table",params.tableno)
  useEffect(()=>{
   axios.defaults.withCredentials = true;
-  localStorage.removeItem("user")
     const MenulistURL=ConfigData.ServerAddress+"/menu-list";
     const restaurantURL=ConfigData.ServerAddress+"/admin/restaurant"
     axios
@@ -20,7 +19,7 @@ const ViewQR=( )=>{
         headers: {
           "Content-Type": "application/json",
         },
-        withCredentials: true,
+        withCredentials: true, 
       }).then((res)=>{
         setItems(res.data)
       })
@@ -31,7 +30,6 @@ const ViewQR=( )=>{
         },
         withCredentials: true,
       }).then((res)=>{
-        console.log(res);
         localStorage.setItem("restaurant",JSON.stringify(res.data))
       }) 
 
@@ -39,10 +37,13 @@ const ViewQR=( )=>{
 
  const addtoCart=async(proId,userId)=>{
   axios.defaults.withCredentials = true;
+  const restaurantId=JSON.parse(localStorage.getItem("restaurant"))._id;
   const cartURL=ConfigData.ServerAddress+"/addto-cart"
   const cartData={
     proId:proId,
-    userId:userId
+    userId:userId,
+    restaurantId:restaurantId
+
    }
    
   await axios
@@ -72,8 +73,8 @@ if(user){
 }
   return (
    items.map((e)=>{
-    let defaultPath= require(`../../uploads/image.png`)
-    let path=`../../uploads/${e.imagePath}`
+    // let defaultPath= require(`../../uploads/image.png`)
+    let path=`/${e.imagePath}`
     path =path.toString();
     const tryRequire=(path)=>{
       try{
@@ -83,11 +84,11 @@ if(user){
       }
       
     }
-    const imagePath=tryRequire(path)?tryRequire(path):defaultPath;
+    const imagePath=tryRequire(path)?tryRequire(path):"";
     return(
 <div  className="menu-div">
         <article key="" className="menu-item">
-        <img src={imagePath} alt="" className="photo" />
+        <img src={path} alt="" className="photo" />
         <div className="item-info">
           <header>
             <h4>{e.name}</h4>

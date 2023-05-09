@@ -50,19 +50,23 @@ module.exports = {
       resolve(menuItems);
     });
   },
-  addtoCart(userId, proId) {
+  addtoCart(userId, proId,restaurantId) {
     let proObj = {
       item: ObjectId(proId),
-      quantity: 1,
+      quantity: 1, 
     };
+    console.log(restaurantId);
     return new Promise(async (resolve, reject) => {
       let userCart = await db
         .get()
         .collection(collection.CART)
-        .findOne({ user: ObjectId(userId) });
+        .findOne({ user: ObjectId(userId),
+        restaurant:ObjectId(restaurantId)
+        });
       if (!userCart) {
         let cartObj = {
           user: ObjectId(userId),
+          restaurant:ObjectId(restaurantId),
           products: [proObj],
         };
         db.get()
@@ -140,8 +144,9 @@ module.exports = {
     });
   },
 
-  getCartProducts: (userId) =>
+  getCartProducts: (userId,restaurantId) =>
     new Promise(async (resolve, reject) => {
+       
       const cartItems = await db
         .get()
         .collection(collection.CART)
@@ -149,6 +154,7 @@ module.exports = {
           {
             $match: {
               user: ObjectId(userId),
+              restaurant:ObjectId(restaurantId)
             },
           },
           {

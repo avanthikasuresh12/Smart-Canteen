@@ -21,13 +21,14 @@ export default function Cart() {
   useEffect(() => {
     axios.defaults.withCredentials = true;
     const cartURL = ConfigData.ServerAddress + "/get-cart";
-    axios
-      .get(cartURL, {
-        headers: {
-          "Content-Type": "application/json",
-        },
-        withCredentials: true,
-      })
+    const restaurantId=JSON.parse( localStorage.getItem("restaurant"))._id;
+    axios.post(cartURL,{
+     restaurantId:restaurantId,
+      headers: {
+        "Content-Type": "application/json",
+      },
+      withCredentials: true,
+    })
       .then((res) => {
       let price=0;
       res.data.map((pro)=>{
@@ -85,7 +86,7 @@ axios
                         </MDBTypography>
                       </div>
                       {products.map((e) => {
-                         let defaultPath= require(`../../uploads/image.png`)
+                        //  let defaultPath= require(`/`)
                          let path=`../../uploads/${e.imagePath}`
                          const tryRequire=(path)=>{
                            try{
@@ -95,7 +96,7 @@ axios
                            }
                            
                          }
-                         const imagePath=tryRequire(path)?tryRequire(path):defaultPath;
+                         const imagePath=tryRequire(path)?tryRequire(path):"defaultPath";
                         return (
                           <>
                             {" "}
