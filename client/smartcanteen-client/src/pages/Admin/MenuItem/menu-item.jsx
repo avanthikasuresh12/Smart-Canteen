@@ -142,7 +142,7 @@ name:"Current Price"
             </div>
           </td>
           <td>
-            <img src={imagePath} height="100px" width="100px"/>
+            <img src={`/uploads/${e.imagePath}`} height="100px" width="100px"/>
           </td>
           <td>
             <p className="fw-normal mb-1">{e.Category}</p>

@@ -84,7 +84,6 @@ router.post("/logout",(req,res)=>{
 
 router.get("/get-orders",(req,res)=>{
   let userId;
-  console.log("hmm");
   if(req.session.user){
     userId=req.session.user._id;
   }

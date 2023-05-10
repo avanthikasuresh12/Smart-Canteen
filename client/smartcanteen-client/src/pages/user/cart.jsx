@@ -107,7 +107,7 @@ axios
                             <MDBRow className="mb-4 d-flex justify-content-between align-items-center">
                               <MDBCol md="2" lg="2" xl="2">
                                 <MDBCardImage
-                                  src={imagePath}
+                                  src={`/uploads/${e.products.imagePath}`}
                                   fluid
                                   className="rounded-3"
                                   alt={e.products.name}

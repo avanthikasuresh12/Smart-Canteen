@@ -207,7 +207,7 @@ const storage = multer.diskStorage({
     }
     cb(
       null,
-      path.join(__dirname, "../../client/smartcanteen-client/src/uploads")
+      path.join(__dirname, "../../client/smartcanteen-client/public/uploads")
     );
   },
   filename: function (req, file, cb) {

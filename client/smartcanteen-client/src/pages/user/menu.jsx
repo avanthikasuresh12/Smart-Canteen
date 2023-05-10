@@ -74,7 +74,7 @@ if(user){
   return (
    items.map((e)=>{
     // let defaultPath= require(`../../uploads/image.png`)
-    let path=`/${e.imagePath}`
+    let path=`/uploads/${e.imagePath}`
     path =path.toString();
     const tryRequire=(path)=>{
       try{
