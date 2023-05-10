@@ -62,14 +62,37 @@ const tableNumber=data.tableno;
       res.send(products)
     })
   })
- 
+  
 //
 router.post("/confirm-order",(req,res)=>{
   const data=req.body.data;
   console.log(data);
-  userHelpers.createOrder(data);
+  let userId;
+  if(req.session.user){
+    userId=req.session.user._id;
+  }
+  userHelpers.createOrder(data,userId).then(( )=>{
+    res.send(true)
+  })
 })
 
+router.post("/logout",(req,res)=>{
+ req.session.user=null;
+ req.session.destroy();
+ res.send(true)
+})
+
+router.get("/get-orders",(req,res)=>{
+  let userId;
+  console.log("hmm");
+  if(req.session.user){
+    userId=req.session.user._id;
+  }
+userHelpers.getAllOrders(userId).then((orders)=>{
+  console.log(orders);
+  res.send(orders)
+})
+})
 
 
 module.exports=router;

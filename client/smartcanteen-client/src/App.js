@@ -1,7 +1,6 @@
 import * as React from "react";
 import "./App.css";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-
 import { Container } from "react-bootstrap";
 import SuperAdminHome from "./pages/SuperAdmin/home";
 import SignIn from "./pages/login";
@@ -16,7 +15,7 @@ import UserRegister from "./pages/user/register";
 import Cart from "./pages/user/cart";
 import Orders from "./pages/user/orders";
 import Invoice from "./pages/user/invoice";
-
+import AdminNavBar from "./pages/admin-navbar";
 const router = createBrowserRouter([
  
   {
@@ -121,15 +120,22 @@ const router = createBrowserRouter([
       element:<Container>
         <Invoice/>
       </Container>
+    },
+    {
+      path:"logout",
+      element: <UserLogin>
+
+      </UserLogin>
     }
     
 
   
 ]);
 function App() {
+  const user=JSON.parse( localStorage.getItem("user"))
   return (
     <div>
-      <NavBar/>
+     {user?user.role=="user"?<NavBar></NavBar>:<AdminNavBar></AdminNavBar>:<></>}
       <RouterProvider router={router}></RouterProvider>
     </div>
   );

@@ -22,6 +22,11 @@ export default function UserLogin() {
   const [loginDetails, setLoginDetails] = useState({});
   const [finalError, setFinalError] = useState("");
   axios.defaults.withCredentials = true;
+  useEffect(()=>{
+    localStorage.removeItem("user")
+    axios.post(ConfigData.ServerAddress+"/logout").then(()=>{
+  })
+  },[])
   useEffect(() => {
     if (Object.keys(error).length == 0 && isSubmit) {
       LoginUser();
@@ -32,7 +37,11 @@ export default function UserLogin() {
   const LoginURL = ConfigData.ServerAddress + "/user_login";
   const LoginUser = () => {
     let restaurant=JSON.parse(localStorage.getItem("restaurant"))
-    const restaurant_id= restaurant._id;
+    let restaurant_id;
+    if(restaurant){
+      restaurant_id= restaurant._id;
+    }
+
     const tableNo=   localStorage.getItem("table")
     axios
       .post(LoginURL, {

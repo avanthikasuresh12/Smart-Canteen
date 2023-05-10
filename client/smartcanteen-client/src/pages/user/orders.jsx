@@ -1,3 +1,4 @@
+import axios from "axios";
 import {
     MDBCard,
     MDBCardBody,
@@ -11,9 +12,19 @@ import {
     MDBRow,
     MDBTypography,
   } from "mdb-react-ui-kit";
-  import React from "react";
+  import React, { useEffect, useState } from "react";
+import ConfigData from "../../config/config";
+
   
   export default function Orders() {
+    const [orders,setorders]=useState([]) 
+  useEffect(()=>{
+    axios.get(ConfigData.ServerAddress+"/get-orders").then((res)=>{
+      console.log(res.data);
+      setorders(res.data)
+      console.log(orders);
+    })
+  },[])
     return (
       <>
         <section
@@ -47,7 +58,7 @@ import {
                             md="2"
                             className="text-center d-flex justify-content-center align-items-center"
                           >
-                            <p className="text-muted mb-0">Samsung Galaxy</p>
+                            <p className="text-muted mb-0">{}</p>
                           </MDBCol>
                           <MDBCol
                             md="2"

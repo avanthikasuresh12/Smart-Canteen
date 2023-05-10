@@ -58,6 +58,9 @@ axios
           "Content-Type": "application/json",
         },
     withCredentials: true,
+  }).then(()=>{
+    console.log("h");
+    window.location.href=ConfigData.originAddress+"/orders"
   })
   }
 
@@ -107,7 +110,7 @@ axios
                                   src={imagePath}
                                   fluid
                                   className="rounded-3"
-                                  alt="Cotton T-shirt"
+                                  alt={e.products.name}
                                 />
                               </MDBCol>
                               <MDBCol md="3" lg="3" xl="3">

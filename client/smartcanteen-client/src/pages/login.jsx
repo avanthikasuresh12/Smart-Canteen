@@ -9,9 +9,7 @@ import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import axios from "axios";
 import ConfigData from "../config/config";
-
 const theme = createTheme();
-
 export default function SignIn() {
   const [error, setError] = useState("");
   const [email, setEmail] = useState("");
@@ -21,6 +19,9 @@ export default function SignIn() {
   const [loginDetails, setLoginDetails] = useState({});
   const [finalError, setFinalError] = useState("");
   axios.defaults.withCredentials = true;
+  useEffect(()=>{
+    localStorage.removeItem("user")
+  })
   useEffect(() => {
     if (Object.keys(error).length == 0 && isSubmit) {
       LoginUser();

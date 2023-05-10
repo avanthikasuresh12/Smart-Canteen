@@ -186,11 +186,12 @@ module.exports = {
       resolve(cartItems);
     }),
 
-    createOrder:(data)=>{
+    createOrder:(data,userId)=>{
       return new Promise(async (resolve,reject)=>{
         const date=new Date();
 
         const order={
+          user_id:ObjectId( userId),
           restaurant :data.restaurant,
           totalPrice:data.totalPrice,
         products:data.products,
@@ -198,8 +199,19 @@ module.exports = {
         date:date.toDateString()
       }
       await db.get().collection(collection.ORDER).insertOne(order)
+      resolve(true)
       })
       
+  },
+
+  getAllOrders:(userId)=>{
+
+
+    return new Promise(async(resolve,reject)=>{
+      await db.get().collection(collection.ORDER).find({user_id:userId}).toArray().then((orders)=>{
+        resolve(orders)
+      })
+    })
   }
   
 };
