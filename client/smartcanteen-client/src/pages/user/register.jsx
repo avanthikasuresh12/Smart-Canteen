@@ -79,6 +79,7 @@ export default function UserRegister() {
   return (
     
     <MDBContainer className="p-3 my-5 d-flex flex-column w-80 mt-30">
+      <h3>Register</h3>
 <form onSubmit={handleSubmit}>
     <MDBInput className="login-text" wrapperClass='mb-4 login-text' label='Email address' id='form1' type='email'  onChange={(e) => {
                 setEmail(e.target.value);
@@ -91,7 +92,7 @@ export default function UserRegister() {
     <MDBBtn type="submit" className="mb-4" style={{ backgroundColor: '#ccaa6a',borderColor:" #ccaa6a"}}>Register</MDBBtn>
 
     <div className="text-center">
-      <p className="login-text">Already have account ? <a href="#!" >Login</a></p>
+      <p className="login-text">Already have account ? <a href="/user_login" >Login</a></p>
       {/* <p>or sign up with:</p>
 
       <div className='d-flex justify-content-between mx-auto' style={{width: '40%'}}>

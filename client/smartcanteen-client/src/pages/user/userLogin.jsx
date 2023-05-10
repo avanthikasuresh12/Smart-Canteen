@@ -94,6 +94,7 @@ export default function UserLogin() {
   return (
     
     <MDBContainer className="p-3 my-5 d-flex flex-column w-80 mt-30">
+      <h3>Login</h3>
 <form onSubmit={handleSubmit}>
     <MDBInput className="login-text" wrapperClass='mb-4 login-text' label='Email address' id='form1' type='email'  onChange={(e) => {
                 setEmail(e.target.value);
@@ -106,27 +107,8 @@ export default function UserLogin() {
     <MDBBtn type="submit" className="mb-4" style={{ backgroundColor: '#ccaa6a',borderColor:" #ccaa6a"}}>Sign in</MDBBtn>
 
     <div className="text-center">
-      <p className="login-text">Not a member? <a href="#!" >Register</a></p>
-      {/* <p>or sign up with:</p>
-
-      <div className='d-flex justify-content-between mx-auto' style={{width: '40%'}}>
-        <MDBBtn tag='a' color='none' className='m-1' style={{ color: '#ccaa6a' }}>
-          <MDBIcon fab icon='facebook-f' size="sm"/>
-        </MDBBtn>
-
-        <MDBBtn tag='a' color='none' className='m-1' style={{ color: '#ccaa6a' }}>
-          <MDBIcon fab icon='twitter' size="sm"/>
-        </MDBBtn>
-
-        <MDBBtn tag='a' color='none' className='m-1' style={{ color: '#ccaa6a' }}>
-          <MDBIcon fab icon='google' size="sm"/>
-        </MDBBtn>
-
-        <MDBBtn tag='a' color='none' className='m-1' style={{ color: '#ccaa6a' }}>
-          <MDBIcon fab icon='github' size="sm"/>
-        </MDBBtn>
-
-      </div> */}
+      <p className="login-text">Not a member? <a href={"/register"} >Register</a></p>
+ 
       
     </div>
     </form>
