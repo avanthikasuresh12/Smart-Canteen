@@ -1,150 +1,219 @@
 import axios from "axios";
 import {
-    MDBCard,
-    MDBCardBody,
-    MDBCardFooter,
-    MDBCardHeader,
-    MDBCardImage,
-    MDBCol,
-    MDBContainer,
-    MDBProgress,
-    MDBProgressBar,
-    MDBRow,
-    MDBTypography,
-  } from "mdb-react-ui-kit";
-  import React, { useEffect, useState } from "react";
+  MDBCard,
+  MDBCardBody,
+  MDBCardFooter,
+  MDBCardHeader,
+  MDBCardImage,
+  MDBCol,
+  MDBContainer,
+  MDBProgress,
+  MDBProgressBar,
+  MDBRow,
+  MDBTypography,
+} from "mdb-react-ui-kit";
+import React, { useEffect, useState } from "react";
 import ConfigData from "../../config/config";
+import { Button } from "react-bootstrap";
 
-  
-  export default function Orders() {
-    const [orders,setorders]=useState([]) 
-  useEffect(()=>{
-    axios.get(ConfigData.ServerAddress+"/get-orders").then((res)=>{
-      console.log(res.data);
-      setorders(res.data)
-      console.log(orders);
-    })
-  },[])
-    return (
-      <>
-        <section
-          className="h-100 "
-          style={{ backgroundColor: "#ffff" }}
-        >
-          <MDBContainer className="py-5 h-100">
-            <MDBRow className="justify-content-center align-items-center h-100">
-              <MDBCol lg="10" xl="8">
-                <MDBCard style={{ borderRadius: "10px" }}>
-                  <MDBCardHeader className="px-4 py-5">
-                    <MDBTypography tag="h5" className="text-muted mb-0">
-                      Thanks for your Order,{" "}
-                      <span style={{ color: "#a8729a" }}>Anna</span>!
-                    </MDBTypography>
-                  </MDBCardHeader>
-                  <MDBCardBody className="p-4">
-                  
-  
-                    <MDBCard className="shadow-0 border mb-4">
-                      <MDBCardBody>
-                        <MDBRow>
-                          <MDBCol md="2">
-                            <MDBCardImage
-                              src="https://mdbcdn.b-cdn.net/img/Photos/Horizontal/E-commerce/Products/13.webp"
-                              fluid
-                              alt="Phone"
-                            />
-                          </MDBCol>
-                          <MDBCol
-                            md="2"
-                            className="text-center d-flex justify-content-center align-items-center"
-                          >
-                            <p className="text-muted mb-0">{}</p>
-                          </MDBCol>
-                          <MDBCol
-                            md="2"
-                            className="text-center d-flex justify-content-center align-items-center"
-                          >
-                            <p className="text-muted mb-0 small">White</p>
-                          </MDBCol>
-                          <MDBCol
-                            md="2"
-                            className="text-center d-flex justify-content-center align-items-center"
-                          >
-                            <p className="text-muted mb-0 small">
-                              Capacity: 64GB
-                            </p>
-                          </MDBCol>
-                          <MDBCol
-                            md="2"
-                            className="text-center d-flex justify-content-center align-items-center"
-                          >
-                            <p className="text-muted mb-0 small">Qty: 1</p>
-                          </MDBCol>
-                          <MDBCol
-                            md="2"
-                            className="text-center d-flex justify-content-center align-items-center"
-                          >
-                            <p className="text-muted mb-0 small">$499</p>
-                          </MDBCol>
-                        </MDBRow>
-                        <hr
-                          className="mb-4"
-                          style={{ backgroundColor: "#e0e0e0", opacity: 1 }}
-                        />
-                        <MDBRow className="align-items-center">
-                          <MDBCol md="2">
-                            <p className="text-muted mb-0 small">Track Order</p>
-                          </MDBCol>
-                          <MDBCol md="10">
-                            <MDBProgress
-                              style={{ height: "6px", borderRadius: "16px" }}
-                            >
-                              <MDBProgressBar
-                                style={{
-                                  borderRadius: "16px",
-                                  backgroundColor: "#a8729a",
-                                }}
-                                width={65}
-                                valuemin={0}
-                                valuemax={100}
-                              />
-                            </MDBProgress>
-                            <div className="d-flex justify-content-around mb-1">
-                              <p className="text-muted mt-1 mb-0 small ms-xl-5">
-                                Out for delivary
-                              </p>
-                              <p className="text-muted mt-1 mb-0 small ms-xl-5">
-                                Delivered
-                              </p>
-                            </div>
-                          </MDBCol>
-                        </MDBRow>
-                      </MDBCardBody>
-                    </MDBCard>
-  
-           
-   
-                  </MDBCardBody>
-                  <MDBCardFooter
-                    className="border-0 px-4 py-5"
-                    style={{
-                      backgroundColor: "#a8729a",
-                      borderBottomLeftRadius: "10px",
-                      borderBottomRightRadius: "10px",
-                    }}
-                  >
-                    <MDBTypography
-                      tag="h5"
-                      className="d-flex align-items-center justify-content-end text-white text-uppercase mb-0"
-                    >
-                      Total paid: <span className="h2 mb-0 ms-2">$1040</span>
-                    </MDBTypography>
-                  </MDBCardFooter>
-                </MDBCard>
-              </MDBCol>
-            </MDBRow>
-          </MDBContainer>
-        </section>
-      </>
+export default function Orders() {
+  const [orders, setOrders] = useState([]);
+  const [refreshPageId, setRefreshPageId] = useState("");
+  useEffect(() => {
+    axios.defaults.withCredentials = true;
+    axios.get(ConfigData.ServerAddress + "/get-orders").then((res) => {
+      setOrders(res.data);
+    });
+  }, [refreshPageId]);
+  async function displayRazorpay(totalPrice, orderID) {
+    const res = await loadScript(
+      "https://checkout.razorpay.com/v1/checkout.js"
     );
+
+    if (!res) {
+      alert("Razorpay SDK failed to load. Are you online?");
+      return;
+    }
+
+    // // creating a new order
+    // const result = await axios.post("http://localhost:5000/payment/orders");
+
+    // if (!result) {
+    //     alert("Server error. Are you online?");
+    //     return;
+    // }
+
+    // Getting the order details back
+    // const { amount, id: order_id, currency } = result.data;
+
+    const options = {
+      key: "rzp_test_1n6JGyiAn0Cu5c", // Enter the Key ID generated from the Dashboard
+      amount: totalPrice * 100,
+      currency: "INR",
+      name: "Smart Canteen.",
+      description: "Test Transaction",
+      image: "",
+      handler: async function (response) {
+        axios.post(ConfigData.ServerAddress+"/update-payment",{
+          id:orderID,
+          headers: {
+            "Content-Type": "application/json",
+          },
+          withCredentials: true,
+        }).then(()=>{
+       setRefreshPageId(Date.now())
+        })
+      },
+      prefill: {
+        name: "SmartCanteen",
+        email: "SoumyaDey@example.com",
+        contact: "9999999999",
+      },
+      notes: {
+        address: "SmartCanteen Corporate Office",
+      },
+      theme: {
+        color: "#61dafb",
+      },
+    };
+
+    const paymentObject = new window.Razorpay(options);
+    paymentObject.open();
   }
+
+  function loadScript(src) {
+    return new Promise((resolve) => {
+      const script = document.createElement("script");
+      script.src = src;
+      script.onload = () => {
+        resolve(true);
+      };
+      script.onerror = () => {
+        resolve(false);
+      };
+      document.body.appendChild(script);
+    });
+  }
+
+  return (
+    <>
+      <section className="h-100 " style={{ backgroundColor: "#ffff" }}>
+        <MDBContainer className="py-5 h-100">
+          <MDBRow className="justify-content-center align-items-center h-100">
+            <MDBCol lg="10" xl="8">
+              <MDBCard style={{ borderRadius: "10px" }}>
+                <MDBCardHeader className="px-4 py-5">
+                  <MDBTypography tag="h5" className="text-muted mb-0">
+                    Thanks for your Order,{" "}
+                    <span style={{ color: "#a8729a" }}> </span>!
+                  </MDBTypography>
+                </MDBCardHeader>
+                <MDBCardBody className="p-4">
+                  {orders.map((e) => {
+                    console.log(e);
+                    return (
+                      <MDBCard className="shadow-0 border mb-4">
+                        <MDBCardBody>
+                          <MDBRow>
+                            <MDBCol md="2">
+                              <MDBCardImage
+                                src={`/${e.products[0].products.imagePath}`}
+                                fluid
+                                alt=""
+                              />
+                            </MDBCol>
+                            <MDBCol
+                              md="2"
+                              className="text-center d-flex justify-content-center align-items-center"
+                            >
+                              <p className="text-muted mb-0">
+                                {e.restaurant.restaurantName}
+                              </p>
+                            </MDBCol>
+                            <MDBCol
+                              md="2"
+                              className="text-center d-flex justify-content-center align-items-center"
+                            >
+                              <p className="text-muted mb-0 small">{e.date}</p>
+                            </MDBCol>
+                            <MDBCol
+                              md="2"
+                              className="text-center d-flex justify-content-center align-items-center"
+                            >
+                              <p className="text-muted mb-0 small">{e.time}</p>
+                            </MDBCol>
+                            <MDBCol
+                              md="2"
+                              className="text-center d-flex justify-content-center align-items-center"
+                            >
+                              <p className="text-muted mb-0 small">
+                                Total items :{e.products.length}
+                              </p>
+                            </MDBCol>
+                            <MDBCol
+                              md="2"
+                              className="text-center d-flex justify-content-center align-items-center"
+                            >
+                              <p className="text-muted mb-0 small">
+                                <b>₹{e.totalPrice}</b>
+                              </p>
+                            </MDBCol>
+                          </MDBRow>
+                          <hr
+                            className="mb-4"
+                            style={{ backgroundColor: "#e0e0e0", opacity: 1 }}
+                          />
+                          <MDBRow className="align-items-center">
+                            <MDBCol md="10">
+                              <MDBProgress
+                                style={{ height: "6px", borderRadius: "16px" }}
+                              >
+                                <MDBProgressBar
+                                  style={{
+                                    borderRadius: "16px",
+                                    backgroundColor: "#a8729a",
+                                  }}
+                                  width={0}
+                                  valuemin={0}
+                                  valuemax={100}
+                                />
+                              </MDBProgress>
+                              <div className="d-flex justify-content-around mb-1">
+                                <p className="text-muted mt-1 mb-0 small ms-xl-5">
+                                  Pending
+                                </p>
+                                <p className="text-muted mt-1 mb-0 small ms-xl-5">
+                                  Accepted
+                                </p>
+                                <p className="text-muted mt-1 mb-0 small ms-xl-5">
+                                  Delivered
+                                </p>
+                              </div>
+
+                              {!e.paymentStatus ? (
+                                <Button
+                                  className="paybutton mt-5"
+                                  onClick={() =>
+                                    displayRazorpay(e.totalPrice, e._id)
+                                  }
+                                >
+                                  Pay Now
+                                </Button>
+                              ) : (
+                                <></>
+                              )}
+                            </MDBCol>
+                          </MDBRow>
+                        </MDBCardBody>
+                      </MDBCard>
+                    );
+                  })}
+                </MDBCardBody>
+              </MDBCard>
+            </MDBCol>
+          </MDBRow>
+        </MDBContainer>
+      </section>
+    </>
+  );
+}

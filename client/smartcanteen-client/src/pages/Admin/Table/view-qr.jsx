@@ -10,7 +10,7 @@ const ViewQR=(props)=>{
     <DialogContent>    
   <div>
   
- <a><img src={url}></img></a>
+ <a><img src={url} width="500px" height="500px"></img></a>
             <Button onClick={()=>setOpenQR(false)}>Close</Button>
           </div>
   

@@ -16,6 +16,8 @@ import Cart from "./pages/user/cart";
 import Orders from "./pages/user/orders";
 import Invoice from "./pages/user/invoice";
 import AdminNavBar from "./pages/admin-navbar";
+import Redirect from "./pages/Admin/redirect";
+import ConfigData from "./config/config";
 const router = createBrowserRouter([
  
   {
@@ -123,9 +125,13 @@ const router = createBrowserRouter([
     },
     {
       path:"logout",
-      element: <UserLogin>
+      element: <SignIn></SignIn>
+    },
+    {
+      path:"/",
+      element:<Redirect>
 
-      </UserLogin>
+      </Redirect>
     }
     
 

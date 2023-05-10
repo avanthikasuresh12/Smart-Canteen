@@ -23,6 +23,7 @@ export default function UserLogin() {
   const [finalError, setFinalError] = useState("");
   axios.defaults.withCredentials = true;
   useEffect(()=>{
+    const user=JSON.parse( localStorage.getItem("user"))
     localStorage.removeItem("user")
     axios.post(ConfigData.ServerAddress+"/logout").then(()=>{
   })

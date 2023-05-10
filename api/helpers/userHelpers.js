@@ -191,6 +191,7 @@ module.exports = {
         const date=new Date();
 
         const order={
+          paymentStatus:false,
           user_id:ObjectId( userId),
           restaurant :data.restaurant,
           totalPrice:data.totalPrice,
@@ -205,12 +206,25 @@ module.exports = {
   },
 
   getAllOrders:(userId)=>{
-
+console.log(userId);
 
     return new Promise(async(resolve,reject)=>{
-      await db.get().collection(collection.ORDER).find({user_id:userId}).toArray().then((orders)=>{
+      await db.get().collection(collection.ORDER).find({
+        user_id:ObjectId( userId)}).toArray().then((orders)=>{
         resolve(orders)
       })
+    })
+  },
+
+  updatePaymentStatus:(id)=>{
+    return new Promise((resolve,reject)=>{
+      console.log(id);
+      db.get().collection(collection.ORDER).updateOne({_id:ObjectId(id) }, {
+        $set: {
+          paymentStatus:true
+        },
+      })
+      resolve(true)
     })
   }
   

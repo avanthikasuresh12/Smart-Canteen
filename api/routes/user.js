@@ -39,6 +39,8 @@ const tableNumber=data.tableno;
     userHelpers.userLogin(loginData).then((response)=>{
       req.session.user=response;
       res.send(response) 
+    }).catch(()=>{
+res.send({message:"Password or email error"})
     })
   }) 
  
@@ -87,11 +89,18 @@ router.get("/get-orders",(req,res)=>{
   if(req.session.user){
     userId=req.session.user._id;
   }
+  
 userHelpers.getAllOrders(userId).then((orders)=>{
-  console.log(orders);
+   
   res.send(orders)
 })
 })
 
 
+router.post("/update-payment",(req,res)=>{
+ console.log(req.body);
+  userHelpers.updatePaymentStatus(req.body.id).then(()=>{
+    res.send(true)
+  })
+})
 module.exports=router;
