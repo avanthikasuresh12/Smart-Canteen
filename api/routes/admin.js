@@ -228,4 +228,20 @@ router.post("/upload", uploads.single("image"), (req, res) => {
 });
 
 
+router.get("/order", (req, res) => {
+  const id = req.session.user._id;
+  adminHelpers.getOrders(id).then((response) => {
+    res.send(response);
+  });
+});
+
+router.post("/update-order",(req,res)=>{
+  data=req.body.data;
+  console.log(data);
+  adminHelpers.updateOrderStatus(data).then((response)=>{
+
+  })
+})
+
 module.exports = router;
+  

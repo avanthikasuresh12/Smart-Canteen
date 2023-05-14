@@ -18,10 +18,7 @@ module.exports = {
             console.log("error");
             reject({ err: "Email or password incorrect" });
           }
-        } else {
-          console.log("bcrypt");
-          console.log(data.password);
-          console.log(user.password);
+        } else { 
           bcrypt.compare(data.password, user.password).then((res, err) => {
             if (res) {
               console.log("res" + res);
@@ -189,15 +186,17 @@ module.exports = {
     createOrder:(data,userId)=>{
       return new Promise(async (resolve,reject)=>{
         const date=new Date();
-
         const order={
           paymentStatus:false,
+          restaurantId:data.restaurant._id,
           user_id:ObjectId( userId),
           restaurant :data.restaurant,
           totalPrice:data.totalPrice,
         products:data.products,
         time:date.toTimeString(),
-        date:date.toDateString()
+        date:date.toDateString(),
+        tableNO:data.tableNo, 
+        status:data.status,
       }
       await db.get().collection(collection.ORDER).insertOne(order)
       resolve(true)

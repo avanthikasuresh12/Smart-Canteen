@@ -110,7 +110,8 @@ export default function Orders() {
                 </MDBCardHeader>
                 <MDBCardBody className="p-4">
                   {orders.map((e) => {
-                    console.log(e);
+                 const statusValue=e.status=="Pending"?20:e.status=="Accepted"?50:100
+                 console.log(statusValue);
                     return (
                       <MDBCard className="shadow-0 border mb-4">
                         <MDBCardBody>
@@ -173,7 +174,7 @@ export default function Orders() {
                                     borderRadius: "16px",
                                     backgroundColor: "#a8729a",
                                   }}
-                                  width={0}
+                                  width={statusValue}
                                   valuemin={0}
                                   valuemax={100}
                                 />

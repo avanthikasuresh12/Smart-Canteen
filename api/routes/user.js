@@ -68,11 +68,11 @@ res.send({message:"Password or email error"})
 //
 router.post("/confirm-order",(req,res)=>{
   const data=req.body.data;
-  console.log(data);
   let userId;
   if(req.session.user){
     userId=req.session.user._id;
   }
+  console.log(data);
   userHelpers.createOrder(data,userId).then(( )=>{
     res.send(true)
   })

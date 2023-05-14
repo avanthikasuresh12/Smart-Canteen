@@ -53,7 +53,7 @@ const ViewQR=( )=>{
     }) 
     .then((res) => {
       if (res.status == 200) {
-        
+        alert("Added to cart!")
       
       }
     });
@@ -63,7 +63,7 @@ const handleCartAdd=(proID)=>{
  console.log(proID);
 let user=localStorage.getItem("user")
 user=JSON.parse(user)
-alert(user)
+ 
 if(user){
   const userId=user._id;
   addtoCart(proID,userId)
@@ -73,7 +73,6 @@ if(user){
 }
   return (
    items.map((e)=>{
-    // let defaultPath= require(`../../uploads/image.png`)
     let path=`/uploads/${e.imagePath}`
     path =path.toString();
     const tryRequire=(path)=>{
@@ -84,7 +83,7 @@ if(user){
       }
       
     }
-    const imagePath=tryRequire(path)?tryRequire(path):"";
+ 
     return(
 <div  className="menu-div">
         <article key="" className="menu-item">

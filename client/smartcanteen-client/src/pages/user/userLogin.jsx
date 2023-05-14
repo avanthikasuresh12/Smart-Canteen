@@ -54,9 +54,7 @@ export default function UserLogin() {
       })
       .then((res) => {
         if (res.status == 200) { 
-          setFinalError("");
           localStorage.setItem("user", JSON.stringify(res.data));
-        alert(localStorage.getItem("user"))
           window.location.href=ConfigData.originAddress+`/menu-list/${restaurant_id}/${tableNo}`;
         }
       })

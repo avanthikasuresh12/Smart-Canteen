@@ -16,7 +16,7 @@ function NavBar() {
   
 
       <br />
-      <Navbar bg="light" variant="light" sticky='top'>
+      <Navbar bg="light" variant="light" sticky='top' className='navbar-col'>
         <Container>
           <Navbar.Brand href=" ">{restaurantName}</Navbar.Brand>      
           <Nav className="me-auto">

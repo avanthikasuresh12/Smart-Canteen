@@ -43,12 +43,16 @@ export default function Cart() {
   const handleConfirm=()=>{
 const ConfrimOrderURL=ConfigData.ServerAddress+"/confirm-order";
 let restaurant=localStorage.getItem("restaurant")
+let tableNo=JSON.parse(localStorage.getItem("table"))
+console.log(tableNo);
 restaurant=JSON.parse(restaurant)
-console.log(restaurant);
+console.log(products); 
 const ordersData={
   products:products,
   totalPrice:totalPrice,
-  restaurant:restaurant
+  restaurant:restaurant,
+  tableNo:tableNo,
+  status:"Pending",
 }
 axios.defaults.withCredentials = true;
 axios
@@ -59,8 +63,7 @@ axios
         },
     withCredentials: true,
   }).then(()=>{
-    console.log("h");
-    window.location.href=ConfigData.originAddress+"/orders"
+   // window.location.href=ConfigData.originAddress+"/orders"
   })
   }
 
@@ -82,7 +85,7 @@ axios
                           tag="h1"
                           className="fw-bold mb-0 text-black"
                         >
-                          Shopping Cart
+                      Food Cart
                         </MDBTypography>
                         <MDBTypography className="mb-0 text-muted">
                           {products.length} items

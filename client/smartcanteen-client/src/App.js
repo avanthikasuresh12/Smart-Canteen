@@ -18,6 +18,8 @@ import Invoice from "./pages/user/invoice";
 import AdminNavBar from "./pages/admin-navbar";
 import Redirect from "./pages/Admin/redirect";
 import ConfigData from "./config/config";
+import AdminOrders from "./pages/Admin/Orders/orders";
+import Footer from "./pages/footer";
 const router = createBrowserRouter([
  
   {
@@ -41,7 +43,7 @@ const router = createBrowserRouter([
       path: "admin",
       element: (
         <Container>
-          <SuperAdminHome />
+       <AdminOrders/>
         </Container>
       ),
     },
@@ -133,7 +135,13 @@ const router = createBrowserRouter([
 
       </Redirect>
     }
-    
+    ,
+    {
+      path:"/admin/order",
+      element: <AdminOrders>
+
+      </AdminOrders>
+    }
 
   
 ]);
@@ -143,6 +151,7 @@ function App() {
     <div>
      {user?user.role=="user"?<NavBar></NavBar>:<AdminNavBar></AdminNavBar>:<></>}
       <RouterProvider router={router}></RouterProvider>
+      <Footer></Footer>
     </div>
   );
 }

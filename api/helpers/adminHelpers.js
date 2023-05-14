@@ -287,7 +287,7 @@ module.exports = {
       }else if(collectionID==2){
         collectionName=collection.MENU_ITEM;
       }
-      db.get()
+    await  db.get()
       .collection(collection.MENU_ITEM)
       .updateOne(
         { _id: ObjectId(itemID) },
@@ -302,5 +302,25 @@ module.exports = {
       })
     })
  
+  },
+
+  getOrders:(id)=>{
+return new Promise(async(resolve,reject)=>{
+  const orders=await db.get().collection(collection.ORDER).find({restaurantId:id}) .toArray()
+  resolve(orders)
+})
+  },
+
+  updateOrderStatus:(data)=>{
+    return new Promise(async(resolve,reject)=>{
+      await db.get().collection(collection.ORDER).updateOne({_id:ObjectId(data.id)},
+       
+        {
+          $set: {
+            status:data.status
+          },
+        }
+      )
+    })
   }
 };

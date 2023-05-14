@@ -29,7 +29,7 @@ function NavBar() {
 
       <br />
       {navBarVisible?
-      <Navbar bg="light" variant="light" sticky='top'>
+      <Navbar bg="light" variant="light" sticky='top' className='navbar-col'>
         <Container>
           <Nav className="me-auto">
             <Nav.Link href={ `/menu-list/${restaurantId}/${tableNo}`}>Menu </Nav.Link>
