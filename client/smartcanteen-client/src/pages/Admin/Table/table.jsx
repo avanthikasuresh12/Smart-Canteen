@@ -13,6 +13,7 @@ import { Button } from "@mui/material";
 import EditTable from "./edit-table";
 import ViewTable from "./view-table";
  import ViewQR from "./view-qr";
+import { FaEdit, FaQrcode, FaReadme, FaTimes } from "react-icons/fa";
  
 const defaultTableDetails = {
   _id: 0,
@@ -134,7 +135,7 @@ if(user.role=="admin"){
             variant="contained"
             onClick={() => HandleOpenEdit(e)}
           >
-            Edit
+          <FaEdit/>
           </Button>
           <Button
             style={{
@@ -147,7 +148,7 @@ if(user.role=="admin"){
             variant="contained"
             onClick={()=>HandleOpenView(e)}
           >
-            view
+          <FaReadme/>
           </Button>
           <Button
             style={{
@@ -160,7 +161,7 @@ if(user.role=="admin"){
             variant="contained"
             onClick={() => generateQRCode(e.number)}
           >
-            QR Code
+          <FaQrcode/>
           </Button>
           <Button
             style={{
@@ -173,7 +174,7 @@ if(user.role=="admin"){
             variant="contained"
             onClick={() => handleDelete(e._id)}
           >
-            Delete
+            <FaTimes/>
           </Button>
         </tr>
       );

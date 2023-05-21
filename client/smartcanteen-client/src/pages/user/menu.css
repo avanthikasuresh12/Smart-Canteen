@@ -60,6 +60,7 @@ body {
   color: var(--clr-grey-1);
   line-height: 1.5;
   font-size: 0.875rem;
+  background-color: #F8F3DE;
 }
 ul {
   list-style-type: none;

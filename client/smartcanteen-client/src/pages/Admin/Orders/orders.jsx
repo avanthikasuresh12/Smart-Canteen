@@ -12,6 +12,7 @@ import { Button, Container } from "react-bootstrap";
 import ViewOrders from "./viewOrders";
  
 import Select from "react-select";
+import { FaReadme } from "react-icons/fa";
  
  
  
@@ -114,7 +115,7 @@ axios.get(adminOrderURL).then((res)=>{
             <div className="d-flex align-items-center">
               <div className="ms-3">
                <Button onClick={()=>OnViewBottonClick(e.products)}>
-                View Items
+                <FaReadme/>
                </Button>
               </div>
             </div>

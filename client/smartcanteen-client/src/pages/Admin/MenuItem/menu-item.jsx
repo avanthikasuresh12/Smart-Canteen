@@ -11,6 +11,7 @@ import ConfigData from "../../../config/config";
 import { Button } from "@mui/material";
 import EditMenuItem from "./edit-menu-item";
 import ViewMenuItem from "./view-menu-item";
+import { FaEdit, FaReadme, FaTimes } from "react-icons/fa";
 // import EditCategory from "./edit-category";
 // import ViewCategory from "./view-category";
  
@@ -159,7 +160,7 @@ name:"Current Price"
             <p className="fw-normal mb-1">{e.offer} %</p>
           </td>
           <td>
-            <p className="fw-normal mb-1">{e.price-(e.offer/100)*e.price} rs</p>
+            <p className="fw-normal mb-1"> {Math.trunc( e.price-(e.offer/100)*e.price  )} rs</p>
           </td>
           
           <td>
@@ -176,7 +177,7 @@ name:"Current Price"
             variant="contained"
             onClick={() => HandleOpenEdit(e)}
           >
-            Edit
+          <FaEdit/> 
           </Button>
           <Button
             style={{
@@ -189,7 +190,7 @@ name:"Current Price"
             variant="contained"
             onClick={()=>HandleOpenView(e)}
           >
-            view
+           <FaReadme/>
           </Button>
           <Button
             style={{
@@ -202,7 +203,7 @@ name:"Current Price"
             variant="contained"
             onClick={() => handleDelete(e._id)}
           >
-            Delete
+            <FaTimes/>
           </Button>
         </tr>
       );

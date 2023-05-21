@@ -14,7 +14,6 @@ import {
 import React, { useEffect, useState } from "react";
 import ConfigData from "../../config/config";
 import axios from "axios";
-import { FaCross, FaLongArrowAltLeft, FaTimes } from "react-icons/fa";
 import { Button } from "react-bootstrap";
 
 export default function Cart() {
@@ -165,16 +164,7 @@ axios
                       })}
                       <hr className="my-4" />
 
-                      <div className="pt-5">
-                        <MDBTypography tag="h6" className="mb-0">
-                          <MDBCardText tag="a" href="#!" className="text-body">
-                            
-                         <FaLongArrowAltLeft/> Back
-                            to shop
-                          </MDBCardText>
-                        </MDBTypography>
-                        
-                      </div>
+                  
                     </div>
                   </MDBCol>
                   <MDBCol lg="4" className="bg-grey">

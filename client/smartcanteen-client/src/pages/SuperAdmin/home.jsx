@@ -13,6 +13,7 @@ import ConfigData from "../../config/config";
 import { Button } from "@mui/material";
 import EditRestaurant from "./edit-restaurant";
 import ViewRestaurant from "./view";
+import { FaEdit, FaReadme, FaTimes } from "react-icons/fa";
 const DefaultRestaurantDet = {
   _id: 0,
 
@@ -190,7 +191,7 @@ if(user.role=="superAdmin"){
             variant="contained"
             onClick={() => HandleOpenEdit(e)}
           >
-            Edit
+          <FaEdit/>
           </Button>
           <Button
             style={{
@@ -203,7 +204,7 @@ if(user.role=="superAdmin"){
             variant="contained"
             onClick={()=>HandleOpenView(e)}
           >
-            view
+         <FaReadme/>
           </Button>
           <Button
             style={{
@@ -216,7 +217,7 @@ if(user.role=="superAdmin"){
             variant="contained"
             onClick={() => handleDelete(e._id)}
           >
-            Delete
+           <FaTimes/>
           </Button>
         </tr>
       );
