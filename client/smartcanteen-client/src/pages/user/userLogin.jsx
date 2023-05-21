@@ -11,6 +11,7 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
  import "./userLogin.css"
 import ConfigData from "../../config/config";
 import axios  from "axios";
+import { Button } from "react-bootstrap";
 const theme = createTheme();
 
 export default function UserLogin() {
@@ -56,10 +57,11 @@ export default function UserLogin() {
         if (res.status == 200) { 
           localStorage.setItem("user", JSON.stringify(res.data));
           window.location.href=ConfigData.originAddress+`/menu-list/${restaurant_id}/${tableNo}`;
-        }
+        } 
       })
       .catch((err) => {
         console.log("error ise", err.response.data.err);
+        alert(err.message)
         setFinalError(err.response.data.err);
       });
   };
@@ -102,7 +104,7 @@ export default function UserLogin() {
                 setPasswod(e.target.value);
               }}/> 
     <p>{error.password}</p>
-    <MDBBtn type="submit" className="mb-4" style={{ backgroundColor: '#ccaa6a',borderColor:" #ccaa6a"}}>Sign in</MDBBtn>
+    <Button type="submit" className="mb-4" style={{ backgroundColor: '#ccaa6a',borderColor:" #ccaa6a"}}>Sign in</Button>
 
     <div className="text-center">
       <p className="login-text">Not a member? <a href={"/register"} >Register</a></p>

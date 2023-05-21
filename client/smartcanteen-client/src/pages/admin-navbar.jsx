@@ -18,12 +18,14 @@ function NavBar() {
       <br />
       <Navbar bg="light" variant="light" sticky='top' className='navbar-col'>
         <Container>
-          <Navbar.Brand href=" ">{restaurantName}</Navbar.Brand>      
+          <Navbar.Brand href="/admin/order ">{restaurantName}</Navbar.Brand>      
           <Nav className="me-auto">
             <Nav.Link href="/admin/category">Category</Nav.Link>
             <Nav.Link href="/admin/menu-item">Menu</Nav.Link>
             <Nav.Link href="/admin/table">Table</Nav.Link>
+            <Nav.Link href="/admin/report">Report</Nav.Link>
             <Nav.Link href="/admin/profile">Profile</Nav.Link>
+            <Nav.Link href="/logout">Logout</Nav.Link>
           </Nav>
         </Container>
       </Navbar>

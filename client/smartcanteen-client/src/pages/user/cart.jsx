@@ -14,6 +14,8 @@ import {
 import React, { useEffect, useState } from "react";
 import ConfigData from "../../config/config";
 import axios from "axios";
+import { FaCross, FaLongArrowAltLeft, FaTimes } from "react-icons/fa";
+import { Button } from "react-bootstrap";
 
 export default function Cart() {
   const [products, setProducts] = useState([]);
@@ -63,12 +65,14 @@ axios
         },
     withCredentials: true,
   }).then(()=>{
-   // window.location.href=ConfigData.originAddress+"/orders"
+     window.location.href=ConfigData.originAddress+"/orders"
   })
   }
 
   return (
+    
     <section className="h-100 h-custom" style={{ backgroundColor: "#FFFFFF" }}>
+      {products.length!=0?
       <MDBContainer className="py-5 h-100">
         <MDBRow className="justify-content-center align-items-center h-100">
           <MDBCol size="12">
@@ -133,15 +137,12 @@ axios
                                 xl="3"
                                 className="d-flex align-items-center"
                               >
-                                <MDBBtn color="link" className="px-2">
-                                  <MDBIcon fas icon="minus" />
-                                </MDBBtn>
-                                <MDBIcon fas icon="minus" />
+                               
+                                 
 <p>{e.quantity}</p>
-<MDBIcon fas icon="plus" />
-                                <MDBBtn color="link" className="px-2">
-                                  <MDBIcon fas icon="plus" />
-                                </MDBBtn>
+
+                               
+                                   
                               </MDBCol>
                               <MDBCol md="3" lg="2" xl="2" className="text-end">
                                 <MDBTypography tag="h6" className="mb-0">
@@ -154,7 +155,8 @@ axios
                               </MDBCol>
                               <MDBCol md="1" lg="1" xl="1" className="text-end">
                                 <a href="#!" className="text-muted">
-                                  <MDBIcon fas icon="times" />
+                                   
+                                   
                                 </a>
                               </MDBCol>
                             </MDBRow>
@@ -166,10 +168,12 @@ axios
                       <div className="pt-5">
                         <MDBTypography tag="h6" className="mb-0">
                           <MDBCardText tag="a" href="#!" className="text-body">
-                            <MDBIcon fas icon="long-arrow-alt-left me-2" /> Back
+                            
+                         <FaLongArrowAltLeft/> Back
                             to shop
                           </MDBCardText>
                         </MDBTypography>
+                        
                       </div>
                     </div>
                   </MDBCol>
@@ -193,7 +197,7 @@ axios
                         <MDBTypography tag="h5">{totalPrice} ₹</MDBTypography>
                       </div>
 
-                      <MDBBtn
+                      <Button
                         block
                         size="lg"
                         style={{
@@ -203,7 +207,7 @@ axios
                         onClick={handleConfirm}
                       >
                       Confirm
-                      </MDBBtn>
+                      </Button>
                     </div>
                   </MDBCol>
                 </MDBRow>
@@ -211,7 +215,11 @@ axios
             </MDBCard>
           </MDBCol>
         </MDBRow>
-      </MDBContainer>
+      </MDBContainer>:<>
+      
+      <div>
+        cart is empty
+        </div></>}
     </section>
   );
 }

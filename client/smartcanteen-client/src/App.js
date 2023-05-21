@@ -20,6 +20,7 @@ import Redirect from "./pages/Admin/redirect";
 import ConfigData from "./config/config";
 import AdminOrders from "./pages/Admin/Orders/orders";
 import Footer from "./pages/footer";
+import SalesReport from "./pages/Admin/salesReport/saleReport";
 const router = createBrowserRouter([
  
   {
@@ -141,12 +142,18 @@ const router = createBrowserRouter([
       element: <AdminOrders>
 
       </AdminOrders>
+    },
+    {
+      path:"/admin/report",
+      element:  <SalesReport/>
     }
 
   
 ]);
 function App() {
   const user=JSON.parse( localStorage.getItem("user"))
+ 
+ 
   return (
     <div>
      {user?user.role=="user"?<NavBar></NavBar>:<AdminNavBar></AdminNavBar>:<></>}

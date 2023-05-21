@@ -322,5 +322,33 @@ return new Promise(async(resolve,reject)=>{
         }
       )
     })
+  },
+
+  getSalesReport:(id)=>{
+    
+    return new Promise(async(resolve,reject)=>{
+      var date7 = new Date();
+date7.setDate(date7.getDate() - 7);
+var finalDate7 = date7.getFullYear()+'-'+(date7.getMonth()+1)+'-'+ date7.getDate() 
+var date30 = new Date();
+date30.setDate(date30.getDate() - 30);
+var finalDate30 = date30.getFullYear()+'-'+(date30.getMonth()+1)+'-'+ date30.getDate() 
+var finalDateToday=new Date().toDateString()
+console.log(finalDate7);
+console.log(new Date(finalDate30));
+console.log(new Date(finalDateToday)); 
+const allOrders=await db.get().collection(collection.ORDER).find({restaurantId:id}) .toArray()
+ const orderstoday=await db.get().collection(collection.ORDER).find({$and:[{date:{$gte:new Date(finalDateToday),$lt:new Date()}},{restaurantId:id}]}) .toArray()
+      const orders7=await db.get().collection(collection.ORDER).find({$and:[{date:{$gte:new Date(finalDate7),$lt:new Date()}},{restaurantId:id}]}) .toArray()
+      const orders30=await db.get().collection(collection.ORDER).find({$and:[{date:{$gte:new Date(finalDate30),$lt:new Date()}},{restaurantId:id}]}) .toArray()
+
+      const totalReport={
+        allOrders:allOrders,
+        orderstoday:orderstoday,
+        orders7:orders7,
+        orders30:orders30,
+      }
+      resolve(totalReport)
+    })
   }
 };

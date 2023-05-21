@@ -40,7 +40,7 @@ const tableNumber=data.tableno;
       req.session.user=response;
       res.send(response) 
     }).catch(()=>{
-res.send({message:"Password or email error"})
+      res.status(401).send({message:"email or password error"});
     })
   }) 
  

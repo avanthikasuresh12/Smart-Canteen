@@ -42,7 +42,7 @@ export default function SignIn() {
       .then((res) => {
         if (res.status == 200) {
           setFinalError("");
-          console.log(res.data);
+          alert(res.data.role);
           localStorage.setItem("user", JSON.stringify(res.data));
           if (res.data.role == "superAdmin") {
             window.location.href = ConfigData.originAddress + "/superadmin";

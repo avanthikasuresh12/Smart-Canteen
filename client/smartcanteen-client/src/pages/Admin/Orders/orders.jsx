@@ -126,7 +126,7 @@ axios.get(adminOrderURL).then((res)=>{
              e.status
               }
               options={OrderStatusOption}
-              value={e.status}
+              
       onChange={(status)=>handleStatusChange(e._id,status.value)}
             />
             </div>

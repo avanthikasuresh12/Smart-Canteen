@@ -185,7 +185,9 @@ module.exports = {
 
     createOrder:(data,userId)=>{
       return new Promise(async (resolve,reject)=>{
-        const date=new Date();
+        var date7 = new Date();
+        date7.setDate(date7.getDate() -27);
+        var finalDate7 = date7.getFullYear()+'-'+(date7.getMonth()+1)+'-'+ date7.getDate() 
         const order={
           paymentStatus:false,
           restaurantId:data.restaurant._id,
@@ -193,8 +195,8 @@ module.exports = {
           restaurant :data.restaurant,
           totalPrice:data.totalPrice,
         products:data.products,
-        time:date.toTimeString(),
-        date:date.toDateString(),
+      //  time:f.toTimeString(),
+        date:new Date(finalDate7), 
         tableNO:data.tableNo, 
         status:data.status,
       }

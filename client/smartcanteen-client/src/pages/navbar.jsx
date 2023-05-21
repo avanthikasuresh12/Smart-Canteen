@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
+import "./navbar.css"
 
 function NavBar() {
   const [restaurantId,setRestaurantId]=useState(0)
@@ -27,17 +28,17 @@ function NavBar() {
     <>
   
 
-      <br />
+      
       {navBarVisible?
-      <Navbar bg="light" variant="light" sticky='top' className='navbar-col'>
-        <Container>
-          <Nav className="me-auto">
+      <Navbar bg="light" color='primary' variant="light" sticky='top' className='navbar'>
+      
+          <Nav className="nav-item m-auto"  >
             <Nav.Link href={ `/menu-list/${restaurantId}/${tableNo}`}>Menu </Nav.Link>
             <Nav.Link href="/orders">Orders</Nav.Link>
             <Nav.Link href="/cart">Cart</Nav.Link>
             <Nav.Link href="/logout">logout</Nav.Link>
           </Nav>
-        </Container>
+        
       </Navbar>:<></>}
     </>
   );

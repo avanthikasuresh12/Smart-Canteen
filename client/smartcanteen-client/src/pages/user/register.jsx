@@ -11,6 +11,7 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
  import "./userLogin.css"
 import ConfigData from "../../config/config";
 import axios  from "axios";
+import { Button } from "react-bootstrap";
 const theme = createTheme();
 
 export default function UserRegister() {
@@ -42,7 +43,7 @@ export default function UserRegister() {
       .then((res) => {
         if (res.status == 200) {
           setFinalError("");
-        
+        window.location.href=ConfigData.originAddress+"/user_login"
         }
       })
       .catch((err) => {
@@ -89,7 +90,7 @@ export default function UserRegister() {
                 setPasswod(e.target.value);
               }}/> 
     <p>{error.password}</p>
-    <MDBBtn type="submit" className="mb-4" style={{ backgroundColor: '#ccaa6a',borderColor:" #ccaa6a"}}>Register</MDBBtn>
+    <Button type="submit" className="mb-4" style={{ backgroundColor: '#ccaa6a',borderColor:" #ccaa6a"}}>Register</Button>
 
     <div className="text-center">
       <p className="login-text">Already have account ? <a href="/user_login" >Login</a></p>

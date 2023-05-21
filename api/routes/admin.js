@@ -243,5 +243,12 @@ router.post("/update-order",(req,res)=>{
   })
 })
 
+router.get("/sales-report", (req, res) => {
+  const id = req.session.user._id;
+  adminHelpers.getSalesReport(id).then((response) => {
+    res.send(response);
+  });
+});
+
 module.exports = router;
   

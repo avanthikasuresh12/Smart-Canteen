@@ -97,6 +97,7 @@ export default function Orders() {
 
   return (
     <>
+    {orders.length!=0?
       <section className="h-100 " style={{ backgroundColor: "#ffff" }}>
         <MDBContainer className="py-5 h-100">
           <MDBRow className="justify-content-center align-items-center h-100">
@@ -118,7 +119,7 @@ export default function Orders() {
                           <MDBRow>
                             <MDBCol md="2">
                               <MDBCardImage
-                                src={`/${e.products[0].products.imagePath}`}
+                                src={`/${e.products.length!=0?e.products[0].products.imagePath:""}`}
                                 fluid
                                 alt=""
                               />
@@ -135,7 +136,7 @@ export default function Orders() {
                               md="2"
                               className="text-center d-flex justify-content-center align-items-center"
                             >
-                              <p className="text-muted mb-0 small">{e.date}</p>
+                              <p className="text-muted mb-0 small">{new Date( e.date).toDateString()}</p>
                             </MDBCol>
                             <MDBCol
                               md="2"
@@ -214,7 +215,10 @@ export default function Orders() {
             </MDBCol>
           </MDBRow>
         </MDBContainer>
-      </section>
+      </section>:<>
+      <div>
+        No Orders
+        </div></>}
     </>
   );
 }
